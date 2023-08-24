@@ -1,1 +1,2 @@
-# charity-angular-drf
+# Charity
+Angular && Django Rest Framework
