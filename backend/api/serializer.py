@@ -9,7 +9,10 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'password')
         extra_kwargs = {'password': {'write_only': True}}
 
-    # hashing password
     def create(self, validated_data):
-        return super().create(**validated_data) 
+        user = get_user_model().objects.create_user(**validated_data)
+        return user
     
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data.pop('password'))
+        return super().update(instance, validated_data)
