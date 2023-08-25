@@ -1,6 +1,9 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
 
+from rest_framework import status
+from rest_framework.response import Response
+
 
 class Queries(object):
     def __init__(self):
@@ -8,10 +11,10 @@ class Queries(object):
 
     def get_user_by_id(self, id: int):
         try:
-            user = get_user_model().objects.only(self.fields).filter(id=id).first()
+            # * asterics is being used for unpacking values, since only accepts *args
+            return get_user_model().objects.only(*self.fields).filter(id=id).first()
         except ObjectDoesNotExist as err:
-            user = None
-        return user
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def get_all_users(self):
-        return get_user_model().objects.only(self.fields).all()
+        return get_user_model().objects.only(*self.fields).all()
