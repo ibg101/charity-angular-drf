@@ -53,7 +53,7 @@ class UsersApiView(APIView):
          return Response(status=status.HTTP_400_BAD_REQUEST)
          
    def delete(self, request: Request, *args, **kwargs) -> Response:
-       field = get_id_or_username(request)
+       field = get_id_or_username(request.data)
        if field:
          user = Queries().get_user_by_field(field=field)
          user.delete()
