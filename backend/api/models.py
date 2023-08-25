@@ -8,7 +8,7 @@ from django.contrib.auth.hashers import make_password
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, username, password, **extra_fields):
         if not email or not username:
-            raise ValueError('This field is required.') 
+            raise ValueError('Email field is required.') 
         email = self.normalize_email(email)
         user = self.model(email=email, username=username, **extra_fields)
         user.password = make_password(password)

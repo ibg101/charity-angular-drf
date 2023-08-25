@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from .db_queries import Queries
 from .serializer import UserSerializer
-from .helper_functions import get_id_or_username
+from .helper_functions import get_id_or_email
 from .custom_permissions import IsOwnerOrAdmin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
@@ -24,7 +24,7 @@ class UsersApiView(APIView):
       return permissions
 
    def get(self, request: Request, *args, **kwargs) -> Response:
-      field = get_id_or_username(request)
+      field = get_id_or_email(request.data)
       if field:
          user = Queries().get_user_by_field(field=field)
          serializer = UserSerializer(instance=user)
@@ -41,7 +41,7 @@ class UsersApiView(APIView):
       return Response(status=status.HTTP_400_BAD_REQUEST)
     
    def put(self, request: Request, *args, **kwargs) -> Response:
-      field = get_id_or_username(data=request.data)
+      field = get_id_or_email(data=request.data)
       if field:
          user = Queries().get_user_by_field(field=field)
          serializer = UserSerializer(instance=user, data=request.data)
@@ -53,7 +53,7 @@ class UsersApiView(APIView):
          return Response(status=status.HTTP_400_BAD_REQUEST)
          
    def delete(self, request: Request, *args, **kwargs) -> Response:
-       field = get_id_or_username(request.data)
+       field = get_id_or_email(request.data)
        if field:
          user = Queries().get_user_by_field(field=field)
          user.delete()
