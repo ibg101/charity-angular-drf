@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DarkModeService } from './shared/services/dark-mode/dark-mode.service';
 
 @Component({
   selector: 'app-root',
@@ -8,11 +9,17 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'westrong';
 
+  constructor(private darkMode: DarkModeService) { }
+
   // toggling Dark mode, depending on system preferences
   ngOnInit(): void {
     const htmlElement = document.documentElement as HTMLElement;
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    if (this.darkMode.systemPrefersDarkMode()) {
       htmlElement.classList.add('tw-dark');
+      this.darkMode.mode = 'dark';
+    }
+    else {
+      this.darkMode.mode = 'light';
     }
   }
 }

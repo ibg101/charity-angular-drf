@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { DarkModeService } from 'src/app/shared/services/dark-mode/dark-mode.service';
 
 @Component({
   selector: 'nav-right-part',
@@ -6,9 +7,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
   styleUrls: ['./right-part.component.scss']
 })
 export class RightPartComponent implements OnInit, OnDestroy {
-  public mode: string = '';
-
-  constructor () {}
+  constructor (public darkMode: DarkModeService) {}
 
   ngOnInit(): void {
     // 
@@ -22,10 +21,11 @@ export class RightPartComponent implements OnInit, OnDestroy {
     const htmlElement = document.documentElement as HTMLElement;
     htmlElement.classList.toggle('tw-dark') ?? console.error('An unexpected error occurred.');
     if (htmlElement.classList.contains('tw-dark')) {
-      this.mode = 'dark'
+      this.darkMode.mode = 'dark'
     }
     else {
-      this.mode = 'light'
+      this.darkMode.mode = 'light'
     }
+    this.darkMode.fill = true;
   }
 }
