@@ -17,8 +17,8 @@ import { HomeModule } from './home/home.module';
     // dependencies
     HttpClientModule,
     // charity
-    SharedModule,
     HomeModule,
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

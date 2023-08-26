@@ -9,10 +9,38 @@ export abstract class AbstractApiService {
   constructor(protected http: HttpClient, protected env: IEnvironment) {}
 
   get<T>(id: number, relativePath: string): Observable<T | T[] | HttpErrorResponse> {
-    const absolutePath = this.craftUrl(id, relativePath ? relativePath : undefined); 
+    const absolutePath = this.craftUrl(id, relativePath); 
     return this.http.get<T | T[] | HttpErrorResponse>(absolutePath).pipe(
       catchError((err: HttpErrorResponse) => of(this.error = err))
     );
+  }
+
+  getAll<T>(relativePath: string): Observable<T[] | HttpErrorResponse> {
+    const absolutePath = this.craftUrl(undefined, relativePath);
+    return this.http.get<T[] | HttpErrorResponse>(absolutePath).pipe(
+      catchError((err: HttpErrorResponse) => of(this.error = err))
+    )
+  }
+
+  post<T>(relativePath: string, body: T | T[]): Observable<T | T[] | HttpErrorResponse> {
+    const absolutePath = this.craftUrl(undefined, relativePath);
+    return this.http.post<T | T[] | HttpErrorResponse>(absolutePath, body).pipe(
+      catchError((err: HttpErrorResponse) => of(this.error = err))
+    );
+  }
+
+  put<T>(id: number, relativePath: string, body: T): Observable<T | HttpErrorResponse> {
+    const absolutePath = this.craftUrl(id, relativePath);
+    return this.http.put<T | HttpErrorResponse>(absolutePath, body).pipe(
+      catchError((err: HttpErrorResponse) => of(this.error = err))
+    )
+  }
+
+  delete(id: number, relativePath: string): Observable<void | HttpErrorResponse> {
+    const absolutePath = this.craftUrl(id, relativePath);
+    return this.http.delete<void | HttpErrorResponse>(absolutePath).pipe(
+      catchError((err: HttpErrorResponse) => of(this.error = err))
+    )
   }
 
   // helper methods
@@ -20,8 +48,6 @@ export abstract class AbstractApiService {
     switch(true) {
       case !!id && !!relativePath:
         return `${this.url}/${relativePath}/${id}`;
-      case !!id:
-        return `${this.url}/${id}`;
       case !!relativePath:
         return `${this.url}/${relativePath}`;
       default:
