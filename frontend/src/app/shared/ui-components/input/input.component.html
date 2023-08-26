@@ -1,1 +1,4 @@
-<p>input works!</p>
+<label for="{{ label }}">
+  <ng-content></ng-content>
+</label>
+<input type="text" id="{{ label }}" class="tw-border-2" [formControl]="control">
