@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { DarkModeService } from 'src/app/shared/services/dark-mode/dark-mode.service';
 
 @Component({
@@ -7,6 +7,9 @@ import { DarkModeService } from 'src/app/shared/services/dark-mode/dark-mode.ser
   styleUrls: ['./right-part.component.scss']
 })
 export class RightPartComponent implements OnInit, OnDestroy {
+  public innerWidth: number = 0;
+  public activeBurger: boolean = false;
+
   constructor (public darkMode: DarkModeService) {}
 
   ngOnInit(): void {
@@ -15,6 +18,11 @@ export class RightPartComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     // 
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.innerWidth = window.innerWidth;
   }
 
   toggleManuallyTheme(): void {
@@ -27,5 +35,9 @@ export class RightPartComponent implements OnInit, OnDestroy {
       this.darkMode.setTheme('light');
     }
     this.darkMode.setFill('true');
+  }
+
+  toggleNavBurger(): void {
+    this.activeBurger = !this.activeBurger;
   }
 }

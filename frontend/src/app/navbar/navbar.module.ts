@@ -5,6 +5,7 @@ import { LeftPartComponent } from './left-part/left-part.component';
 import { RightPartComponent } from './right-part/right-part.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import { UlListComponent } from './ul-list/ul-list.component';
 
 
 
@@ -13,6 +14,7 @@ import { SharedModule } from '../shared/shared.module';
     NavbarComponent,
     LeftPartComponent,
     RightPartComponent,
+    UlListComponent,
   ],
   imports: [
     CommonModule,
