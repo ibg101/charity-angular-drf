@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UiComponentsModule } from './ui-components/ui-components.module';
 import { InputComponent } from './ui-components/input/input.component';
 import { ButtonComponent } from './ui-components/button/button.component';
+import { RouterLinkComponent } from './ui-components/router-link/router-link.component';
 
 
 
@@ -15,6 +16,7 @@ import { ButtonComponent } from './ui-components/button/button.component';
   exports: [
     InputComponent,
     ButtonComponent,
+    RouterLinkComponent,
   ]
 })
 export class SharedModule { }

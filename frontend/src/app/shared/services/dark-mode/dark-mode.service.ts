@@ -12,7 +12,7 @@ export class DarkModeService {
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   }
 
-  setSystemTheme(): void {
+  defineSystemTheme(): void {
     if (this.systemPrefersDarkMode()) {
       this.systemTheme = 'dark';
     }
@@ -23,7 +23,7 @@ export class DarkModeService {
 
   toggleTheme(): void {
     const htmlElement = document.documentElement as HTMLElement;
-    this.setSystemTheme();
+    this.defineSystemTheme();
     if (this.theme === 'dark') {
       htmlElement.classList.add('tw-dark');  
     }

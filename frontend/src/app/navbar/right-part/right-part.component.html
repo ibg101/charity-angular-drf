@@ -1,7 +1,29 @@
-<div class="tw-flex tw-items-center">
-  <button (click)="toggleManuallyTheme()">
+<div class="tw-flex tw-items-center tw-gap-x-6 tw-text-slate-700 dark:tw-text-slate-200 tw-font-medium">
+  <ul class="tw-flex tw-space-x-8">
+    <li>
+      <app-router-link link="">Home</app-router-link>
+    </li>
+
+    <li>
+      <app-router-link link="post">Post</app-router-link>
+    </li>
+
+    <li>
+      <app-router-link link="donate">Donate</app-router-link>
+    </li>
+
+    <li>
+      <app-router-link link="about">About</app-router-link>
+    </li>
+  </ul>
+
+  <button (click)="toggleManuallyTheme()" class="tw-border-l tw-pl-6 tw-border-slate-200 dark:tw-border-slate-800">
     <ng-container *ngTemplateOutlet="modes"></ng-container>
   </button>
+
+  <li>
+    <app-router-link link="sign-up">Sign Up</app-router-link>
+  </li>
 </div>
 
 <ng-template #modes>

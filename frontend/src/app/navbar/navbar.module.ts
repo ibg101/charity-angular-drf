@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LeftPartComponent } from './left-part/left-part.component';
 import { RightPartComponent } from './right-part/right-part.component';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -10,10 +12,12 @@ import { RightPartComponent } from './right-part/right-part.component';
   declarations: [
     NavbarComponent,
     LeftPartComponent,
-    RightPartComponent
+    RightPartComponent,
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule,
+    SharedModule,
   ],
   exports: [
     NavbarComponent,
