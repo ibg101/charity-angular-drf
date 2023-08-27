@@ -17,7 +17,7 @@ export class RightPartComponent implements OnInit, OnDestroy {
     // 
   }
 
-  toggleDarkMode(): void {
+  toggleManuallyTheme(): void {
     const htmlElement = document.documentElement as HTMLElement;
     htmlElement.classList.toggle('tw-dark') ?? console.error('An unexpected error occurred.');
     if (htmlElement.classList.contains('tw-dark')) {

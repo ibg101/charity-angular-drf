@@ -12,6 +12,26 @@ export class DarkModeService {
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   }
 
+  setSystemTheme(): void {
+    if (this.systemPrefersDarkMode()) {
+      this.systemTheme = 'dark';
+    }
+    else {
+      this.systemTheme = 'light';
+    }
+  }
+
+  toggleTheme(): void {
+    const htmlElement = document.documentElement as HTMLElement;
+    this.setSystemTheme();
+    if (this.theme === 'dark') {
+      htmlElement.classList.add('tw-dark');  
+    }
+    else if (this.theme === 'light') {
+      htmlElement.classList.remove('tw-dark')
+    } 
+  }
+
   setTheme(theme: string): void {
     sessionStorage.setItem('theme', theme);
   }
