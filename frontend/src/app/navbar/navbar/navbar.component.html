@@ -1,7 +1,24 @@
-<div class="
-tw-flex tw-relative tw-items-center
-tw-justify-between tw-py-4 tw-px-6 sm:tw-py-5 sm:tw-px-9 
-tw-border-b tw-border-b-slate-900/10 dark:tw-border-b-slate-50/5">
-  <nav-left-part></nav-left-part>
-  <nav-right-part></nav-right-part>
+<div class="tw-relative">
+  <!-- navbar -->
+  <div class="
+  tw-flex tw-items-center
+  tw-justify-between tw-py-4 tw-px-6 sm:tw-py-5 sm:tw-px-9 
+  tw-border-b tw-border-b-slate-900/10 dark:tw-border-b-slate-50/5">
+    <nav-left-part></nav-left-part>
+    <nav-right-part></nav-right-part>
+  </div>
+
+  <!-- burger nav model -->
+  <div class="
+  tw-absolute tw-right-7 tw-flex tw-flex-col tw-gap-y-1 sm:tw-right-9
+  tw-text-slate-700 dark:tw-text-slate-200 tw-font-medium
+  ">
+    <ng-container *ngIf="nav.activeBurger">
+      <nav-ul-list className="md:tw-hidden tw-flex tw-flex-col tw-gap-y-1"></nav-ul-list>
+    
+      <li class="md:tw-hidden">
+        <app-router-link link="sign-up">Sign Up</app-router-link>
+      </li>
+    </ng-container>
+  </div>
 </div>
