@@ -21,11 +21,11 @@ export class RightPartComponent implements OnInit, OnDestroy {
     const htmlElement = document.documentElement as HTMLElement;
     htmlElement.classList.toggle('tw-dark') ?? console.error('An unexpected error occurred.');
     if (htmlElement.classList.contains('tw-dark')) {
-      this.darkMode.mode = 'dark'
+      this.darkMode.setTheme('dark');
     }
     else {
-      this.darkMode.mode = 'light'
+      this.darkMode.setTheme('light');
     }
-    this.darkMode.fill = true;
+    this.darkMode.setFill('true');
   }
 }

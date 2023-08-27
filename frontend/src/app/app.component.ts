@@ -16,10 +16,10 @@ export class AppComponent implements OnInit {
     const htmlElement = document.documentElement as HTMLElement;
     if (this.darkMode.systemPrefersDarkMode()) {
       htmlElement.classList.add('tw-dark');
-      this.darkMode.mode = 'dark';
+      this.darkMode.systemTheme = 'dark';
     }
     else {
-      this.darkMode.mode = 'light';
+      this.darkMode.systemTheme = 'light';
     }
   }
 }
