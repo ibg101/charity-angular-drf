@@ -14,11 +14,14 @@ export class AppComponent implements OnInit {
   // toggling Dark mode, depending on system preferences
   ngOnInit(): void {
     const htmlElement = document.documentElement as HTMLElement;
-    if (this.darkMode.systemPrefersDarkMode()) {
+    // a bit tricky logic
+    if (this.darkMode.theme === 'dark' || this.darkMode.systemPrefersDarkMode()) {
       htmlElement.classList.add('tw-dark');
       this.darkMode.systemTheme = 'dark';
     }
-    else {
+    // placing here || !this.darkMode.systemPrefersDarkMode() causes bug
+    if (this.darkMode.theme === 'light') {
+      htmlElement.classList.remove('tw-dark');
       this.darkMode.systemTheme = 'light';
     }
   }
