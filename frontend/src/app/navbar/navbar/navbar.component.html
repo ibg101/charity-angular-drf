@@ -10,11 +10,17 @@
 
   <!-- burger nav model -->
   <div class="
-  tw-absolute tw-right-7 tw-flex tw-flex-col tw-gap-y-1 sm:tw-right-9
-  tw-text-slate-700 dark:tw-text-slate-200 tw-font-medium
-  ">
+  tw-rounded-bl-xl
+  tw-text-center tw-font-medium
+  tw-pt-1 tw-pb-2 tw-px-7 sm:tw-px-9
+  tw-absolute tw-right-0 tw-flex tw-flex-col tw-gap-y-1
+  tw-bg-white dark:tw-bg-slate-900
+  tw-text-slate-700 dark:tw-text-slate-200
+  "
+  [ngClass]="{'tw-border-b tw-border-x tw-border-slate-900/10 dark:tw-border-slate-50/5': nav.activeBurger && nav.innerWidth < 768}"
+  >
     <ng-container *ngIf="nav.activeBurger">
-      <nav-ul-list className="md:tw-hidden tw-flex tw-flex-col tw-gap-y-1"></nav-ul-list>
+      <nav-ul-list className="tw-flex tw-flex-col tw-gap-y-1 md:tw-hidden"></nav-ul-list>
     
       <li class="md:tw-hidden">
         <app-router-link link="sign-up">Sign Up</app-router-link>
