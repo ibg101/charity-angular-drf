@@ -22,7 +22,7 @@ export class RightPartComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
+  onResize(event: Event): void {
     this.nav.innerWidth = window.innerWidth;
   }
 

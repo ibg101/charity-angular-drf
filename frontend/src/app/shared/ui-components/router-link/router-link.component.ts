@@ -7,4 +7,10 @@ import { Component, Input } from '@angular/core';
 })
 export class RouterLinkComponent {
   @Input() public link: string = '';
+  @Input() public applyActiveLink: boolean = true;
+  @Input() public applyHover: boolean = true;
+
+  get linkActive(): string {
+    return this.applyActiveLink ? 'tw-text-sky-500 dark:tw-text-sky-400' : '';
+  }
 }

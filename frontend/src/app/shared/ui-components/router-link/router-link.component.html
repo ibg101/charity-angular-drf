@@ -1,3 +1,7 @@
-<a routerLink="{{ link }}" routerLinkActive="tw-text-sky-500 dark:tw-text-sky-400" [routerLinkActiveOptions]="{exact: true}" class="hover:tw-text-sky-500 dark:hover:tw-text-sky-400">
+<!-- by default it applies hover and highlighted when route is active -->
+<a routerLink="{{ link }}" [routerLinkActiveOptions]="{exact: true}" 
+  routerLinkActive="{{ linkActive }}" 
+  [ngClass]="{'hover:tw-text-sky-500 dark:hover:tw-text-sky-400': applyHover}"
+>
   <ng-content></ng-content>
 </a>
