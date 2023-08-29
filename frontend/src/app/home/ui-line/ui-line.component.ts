@@ -16,7 +16,7 @@ export class UiLineComponent {
 
   get lineHeight(): string {
     // default height is set.
-    return this.height ? this.height : 'tw-h-8';
+    return this.height ? this.height : 'tw-h-28';
   }
 
   get lineHeightY(): string {
