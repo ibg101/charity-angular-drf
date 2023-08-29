@@ -5,6 +5,7 @@ import { ButtonComponent } from './button/button.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { RouterLinkComponent } from './router-link/router-link.component';
+import { UiLineComponent } from './ui-line/ui-line.component';
 
 
 
@@ -13,6 +14,7 @@ import { RouterLinkComponent } from './router-link/router-link.component';
     InputComponent,
     ButtonComponent,
     RouterLinkComponent,
+    UiLineComponent,
   ],
   imports: [
     CommonModule,
@@ -23,6 +25,7 @@ import { RouterLinkComponent } from './router-link/router-link.component';
     InputComponent, 
     ButtonComponent,
     RouterLinkComponent,
+    UiLineComponent,
   ]
 })
 export class UiComponentsModule { }
