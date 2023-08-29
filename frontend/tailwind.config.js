@@ -4,7 +4,12 @@ module.exports = {
     "./src/**/*.{html,ts}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      gradientColorStops: {
+        'primary': '#845EC2',
+        'secondary': '#D65DB1',
+      }
+    },
   },
   plugins: [],
   prefix: "tw-",

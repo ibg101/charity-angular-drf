@@ -1,4 +1,8 @@
-<label for="{{ label }}">
-  <ng-content></ng-content>
-</label>
-<input type="text" id="{{ label }}" class="tw-border-2" [formControl]="control">
+<div class="tw-flex tw-flex-col tw-w-full">
+  <label for="{{ label }}">
+    <ng-content></ng-content>
+  </label>
+  <input type="text" id="{{ label }}" [formControl]="control" class="
+    tw-border-2
+  ">
+</div>
