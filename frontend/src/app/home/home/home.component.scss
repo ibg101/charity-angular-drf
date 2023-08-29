@@ -1,0 +1,15 @@
+// splitting up the phrase
+@media (max-width: 1023px) and (min-width: 364px) {
+  .home-main-phrase::before {
+    content: "\A";
+    white-space: pre;
+    bottom: 0;
+  }   
+}
+
+// preventing bug with pt that occurred after splitting up the phrase 
+@media (max-width: 363px) {
+  .home-main-container {
+    padding-top: 5em;
+  }
+}
