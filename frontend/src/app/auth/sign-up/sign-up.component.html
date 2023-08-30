@@ -1,13 +1,24 @@
 <div class="
   tw-flex tw-flex-col tw-gap-y-6 tw-items-center
   tw-pt-14 sm:tw-pt-16 md:tw-pt-20 lg:tw-pt-24
+  tw-px-6 sm:tw-px-0
   ">
-  <!-- sm:tw-max-w-sm can be used instead xs -->
-  <div class="tw-flex tw-flex-col tw-gap-y-2.5 sm:tw-max-w-xs sm:tw-w-full">
+  <h1 class="
+    tw-text-center 
+    tw-font-bold tw-tracking-tight tw-leading-9
+    tw-text-2xl
+    tw-text-gray-900 dark:tw-text-gray-50
+  ">Sign up to your account</h1>
+
+  <div class="
+    tw-flex tw-flex-col tw-gap-y-2.5 
+    tw-w-full tw-max-w-md sm:tw-max-w-sm
+    ">
     <app-input label="email" placeholder="john@example.com">Email</app-input>
     <app-input label="username" placeholder="anonymous">Username</app-input>
     <app-input label="password">Password</app-input>
     <app-input label="confirm-password">Confirm Password</app-input>
   </div>
+
   <app-button>Sign Up</app-button>
 </div>
