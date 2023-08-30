@@ -4,11 +4,11 @@
   <label for="{{ label }}" class="tw-text-sm tw-font-medium tw-leading-6 tw-text-gray-800 dark:tw-text-gray-100">
     <ng-content></ng-content>
   </label>
-  <input type="text" id="{{ label }}" [formControl]="control" class="
+  <input placeholder="{{ placeholder }}" type="text" id="{{ label }}" [formControl]="control" class="
     tw-rounded-md tw-border-0 tw-py-1.5 tw-px-3
   tw-text-gray-900 placeholder:tw-text-gray-400 sm:tw-text-sm sm:tw-leading-6
     tw-shadow-sm tw-outline-none 
     tw-ring-1 tw-ring-inset tw-ring-gray-300 focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-indigo-600
-    dark:tw-bg-slate-800 dark:tw-text-gray-100 dark:tw-ring-gray-700  dark:focus:tw-ring-indigo-500
+    dark:tw-bg-slate-800 dark:tw-text-gray-100 dark:placeholder:tw-text-gray-500 dark:tw-ring-gray-700  dark:focus:tw-ring-indigo-500
   ">
 </div>
