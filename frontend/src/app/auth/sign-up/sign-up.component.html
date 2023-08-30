@@ -18,7 +18,13 @@
     <app-input label="username" placeholder="anonymous">Username</app-input>
     <app-input label="password">Password</app-input>
     <app-input label="confirm-password">Confirm Password</app-input>
-  </div>
 
+    <div class="
+      tw-flex tw-justify-start tw-items-center tw-gap-x-2">
+      <app-input [isCheckbox]="true"></app-input>
+      <h1 class="tw-text-sm tw-leading-6 tw-text-gray-700 dark:tw-text-gray-200">Remember me for 12 days</h1>
+    </div>
+  </div>
+  
   <app-button>Sign Up</app-button>
 </div>

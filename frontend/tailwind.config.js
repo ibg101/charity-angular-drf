@@ -11,7 +11,8 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  // need for applying styles to custom checkbox (without this plugin styles, applied, f.e. on checkbox, dont work)
+  plugins: [require("@tailwindcss/forms")],
   prefix: "tw-",
   darkMode: "class",
 }
