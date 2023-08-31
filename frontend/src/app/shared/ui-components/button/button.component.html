@@ -1,8 +1,7 @@
-<button class="
-  tw-bg-slate-900 hover:tw-bg-slate-700 dark:tw-bg-sky-500 hover:dark:tw-bg-sky-400
-  focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-slate-400 focus:tw-ring-offset-2 focus:tw-ring-offset-slate-50
-  tw-text-white tw-font-semibold tw-highlight-white
-  tw-px-12 tw-py-2.5 tw-border-1 tw-rounded-lg
-  ">
+<button [ngClass]="!isAuthButton ? 
+    'tw-bg-slate-900 hover:tw-bg-slate-700 dark:tw-bg-sky-500 hover:dark:tw-bg-sky-400 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-slate-400 focus:tw-ring-offset-2 focus:tw-ring-offset-slate-50 tw-text-white tw-font-semibold tw-highlight-white tw-px-12 tw-py-2.5 tw-border-1 tw-rounded-lg'
+    :
+    'tw-flex tw-w-full tw-justify-center tw-rounded-md tw-bg-indigo-600 tw-px-3 tw-py-1.5 tw-text-sm tw-font-semibold tw-leading-6 tw-text-white tw-shadow-sm hover:tw-bg-indigo-500 focus-visible:tw-outline focus-visible:tw-outline-2 focus-visible:tw-outline-offset-2 focus-visible:tw-outline-indigo-600 dark:tw-bg-indigo-500 dark:hover:tw-bg-indigo-400'
+    ">
   <ng-content></ng-content>
 </button>

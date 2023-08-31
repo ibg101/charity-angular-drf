@@ -6,7 +6,6 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./router-link.component.scss']
 })
 export class RouterLinkComponent {
-  @Input() public link: string = '';
   @Input() public applyActiveLink: boolean = true;
   @Input() public applyHover: boolean = true;
 

@@ -9,6 +9,7 @@ import { FormControl } from '@angular/forms';
 export class InputComponent implements OnInit {
   @Input() public label: string = '';
   @Input() public placeholder: string = '';
+  @Input() public labelCustomFont: string = '';
   @Input() public isCheckbox: boolean = false;
   @Input() public control: FormControl = new FormControl();
   public inputType: string = '';
