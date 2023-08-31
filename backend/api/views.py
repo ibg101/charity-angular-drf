@@ -38,6 +38,7 @@ class UsersApiView(APIView):
       serializer = UserSerializer(data=request.data)
       if serializer.is_valid():
          serializer.save()
+         # accessing id by currently created instance, whose data were validated, to ensure there're no vulns 
          instance = serializer.instance.id
          token, created = Token.objects.get_or_create(user_id=instance)
          data = serializer.data
