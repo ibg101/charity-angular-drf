@@ -9,7 +9,7 @@
   </button>
 
   <li class="tw-hidden md:tw-flex">
-    <app-router-link routerLink="/auth/sign-up">Sign Up</app-router-link>
+    <app-router-link [routerLink]="link.auth['signUp']">Sign Up</app-router-link>
   </li>
 
   <button (click)="nav.toggleNavBurger()" class="md:tw-hidden">

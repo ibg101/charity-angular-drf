@@ -1,9 +1,14 @@
 from typing import Any, Optional
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth import get_user_model
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
-# Create your models here.
+from rest_framework.authtoken.models import Token
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, username, password, **extra_fields):
@@ -27,3 +32,10 @@ class CustomUser(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+
+# on every user creation -> create appropriated token 
+@receiver(post_save, sender=get_user_model())
+def add_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance) 

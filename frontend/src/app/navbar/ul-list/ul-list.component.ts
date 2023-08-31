@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { LinksService } from 'src/app/shared/services/links/links.service';
 
 @Component({
   selector: 'nav-ul-list',
@@ -7,4 +8,6 @@ import { Component, Input } from '@angular/core';
 })
 export class UlListComponent {
   @Input() className: string = '';
+
+  constructor(public link: LinksService) { }
 }

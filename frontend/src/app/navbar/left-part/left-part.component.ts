@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LinksService } from 'src/app/shared/services/links/links.service';
 
 @Component({
   selector: 'nav-left-part',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./left-part.component.scss']
 })
 export class LeftPartComponent {
-
+  constructor(public link: LinksService) { }
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LinksService } from 'src/app/shared/services/links/links.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./sign-in.component.scss']
 })
 export class SignInComponent {
-
+  constructor(public link: LinksService) { }
 }

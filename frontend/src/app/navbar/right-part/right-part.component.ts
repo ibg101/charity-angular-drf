@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { DarkModeService } from 'src/app/shared/services/dark-mode/dark-mode.service';
 import { NavbarService } from '../services/navbar.service';
+import { LinksService } from 'src/app/shared/services/links/links.service';
 
 @Component({
   selector: 'nav-right-part',
@@ -9,8 +10,9 @@ import { NavbarService } from '../services/navbar.service';
 })
 export class RightPartComponent implements OnInit, OnDestroy {
   constructor (
-    public darkMode: DarkModeService,
     public nav: NavbarService,
+    public link: LinksService,
+    public darkMode: DarkModeService,
     ) { }
 
   ngOnInit(): void {

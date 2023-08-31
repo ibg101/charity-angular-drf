@@ -19,7 +19,7 @@
       <div class="tw-flex tw-justify-between">
         <h1>Password</h1>
         <!-- resetting password feature will be added -->
-        <app-router-link [applyHover]="false" link="password-reset" 
+        <app-router-link [applyHover]="false" [routerLink]="link.auth['passwordReset']" 
         class="
         tw-text-indigo-600 hover:tw-text-indigo-500
         dark:tw-text-indigo-400 dark:hover:tw-text-indigo-300
@@ -33,11 +33,11 @@
       <h1 class="tw-text-sm tw-leading-6 tw-text-gray-700 dark:tw-text-gray-200">Remember me for 12 days</h1>
     </div>
 
-    <app-button [isAuthButton]="true">Sign In</app-button>
+    <app-button [isAuthButton]="true" [routerLink]="link.auth['signIn']">Sign In</app-button>
 
     <div class="tw-flex tw-justify-center tw-items-center tw-text-sm">
       <h1 class="tw-text-gray-500">Dont have any account yet?&nbsp;</h1>
-      <app-router-link [applyHover]="false" routerLink="/auth/sign-up" 
+      <app-router-link [applyHover]="false" [routerLink]="link.auth['signUp']" 
         class="
           tw-font-medium tw-leading-6
         tw-text-indigo-600 hover:tw-text-indigo-500

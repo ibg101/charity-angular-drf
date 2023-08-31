@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LinksService } from '../shared/services/links/links.service';
 
 @Component({
   selector: 'app-not-found',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./not-found.component.scss']
 })
 export class NotFoundComponent {
-
+  constructor(public link: LinksService) { }
 }

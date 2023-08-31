@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LinksService } from 'src/app/shared/services/links/links.service';
 
 @Component({
   selector: 'app-home',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  
+  constructor(public link: LinksService) { }
 }

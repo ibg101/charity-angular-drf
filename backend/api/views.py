@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 
 from .db_queries import Queries
 from .serializer import UserSerializer
@@ -37,7 +38,13 @@ class UsersApiView(APIView):
       serializer = UserSerializer(data=request.data)
       if serializer.is_valid():
          serializer.save()
-         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+         instance = serializer.instance.id
+         token, created = Token.objects.get_or_create(user_id=instance)
+         data = serializer.data
+         data.update({
+            'token': token.key
+         })
+         return Response(data=data, status=status.HTTP_201_CREATED)
       return Response(status=status.HTTP_400_BAD_REQUEST)
     
    def put(self, request: Request, *args, **kwargs) -> Response:
