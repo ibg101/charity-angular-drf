@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+import { bgDarkPath, bgLightPath } from 'src/app/utilities/constants';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DarkModeService {
+export class ThemeService {
   public systemTheme: string = '';
+  public bgPath: string = '';
 
   constructor() { }
 
@@ -21,17 +23,32 @@ export class DarkModeService {
     }
   }
 
-  toggleTheme(): void {
-    const htmlElement = document.documentElement as HTMLElement;
-    this.defineSystemTheme();
+  defineBg(): void {
     if (this.theme === 'dark') {
-      htmlElement.classList.add('tw-dark');  
+      this.bgPath = bgDarkPath;  
+    }
+    else if (this.theme === 'light') {
+      this.bgPath = bgLightPath;
+    }
+  }
+
+  // cant be used as standalone function. ! use in pair with defineSystemTheme
+  toggleClassTheme(): void {
+    const htmlElement = document.documentElement as HTMLElement;
+    if (this.theme === 'dark') {
+      htmlElement.classList.add('tw-dark');
     }
     else if (this.theme === 'light') {
       htmlElement.classList.remove('tw-dark')
     } 
   }
 
+  toggleTheme(): void {
+    this.defineSystemTheme();
+    this.defineBg();
+    this.toggleClassTheme();
+  }    
+  
   setTheme(theme: string): void {
     sessionStorage.setItem('theme', theme);
   }

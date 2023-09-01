@@ -1,0 +1,8 @@
+// Global file that contain constants.
+// Path's can be served here (NOTE! except routes within application, they must be served in the LinksService)
+
+// images (development only)
+export const imgPath: string = '../assets/images';
+export const bgPath: string = `${imgPath}/background`;
+export const bgDarkPath: string = `${bgPath}/fancy-bg-dark.jpg`;
+export const bgLightPath: string = `${bgPath}/fancy-bg-light.jpg`;

@@ -7,14 +7,13 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
 import { NavbarModule } from './navbar/navbar.module';
+import { FancyBgModule } from './fancy-bg/fancy-bg.module';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { FancyBgComponent } from './fancy-bg/fancy-bg.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NotFoundComponent,
-    FancyBgComponent
   ],
   imports: [
     BrowserModule,
@@ -24,6 +23,7 @@ import { FancyBgComponent } from './fancy-bg/fancy-bg.component';
     // charity
     HomeModule,
     NavbarModule,
+    FancyBgModule,
     SharedModule,
   ],
   providers: [],

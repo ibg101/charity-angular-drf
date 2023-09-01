@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
-import { DarkModeService } from 'src/app/shared/services/dark-mode/dark-mode.service';
+import { ThemeService } from 'src/app/shared/services/theme/theme.service';
 import { NavbarService } from '../services/navbar.service';
 import { LinksService } from 'src/app/shared/services/links/links.service';
 
@@ -12,7 +12,7 @@ export class RightPartComponent implements OnInit, OnDestroy {
   constructor (
     public nav: NavbarService,
     public link: LinksService,
-    public darkMode: DarkModeService,
+    public theme: ThemeService,
     ) { }
 
   ngOnInit(): void {
@@ -32,11 +32,12 @@ export class RightPartComponent implements OnInit, OnDestroy {
     const htmlElement = document.documentElement as HTMLElement;
     htmlElement.classList.toggle('tw-dark') ?? console.error('An unexpected error occurred.');
     if (htmlElement.classList.contains('tw-dark')) {
-      this.darkMode.setTheme('dark');
+      this.theme.setTheme('dark');
     }
     else {
-      this.darkMode.setTheme('light');
+      this.theme.setTheme('light');
     }
-    this.darkMode.setFill('true');
+    this.theme.defineBg();
+    this.theme.setFill('true');
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DarkModeService } from './shared/services/dark-mode/dark-mode.service';
+import { ThemeService } from './shared/services/theme/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +9,10 @@ import { DarkModeService } from './shared/services/dark-mode/dark-mode.service';
 export class AppComponent implements OnInit {
   title = 'westrong';
 
-  constructor(private darkMode: DarkModeService) { }
+  constructor(private theme: ThemeService) { }
 
   // toggling Dark mode, depending on system preferences
   ngOnInit(): void {
-    this.darkMode.toggleTheme();
+    this.theme.toggleTheme();
   }
 }
