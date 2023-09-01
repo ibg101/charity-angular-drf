@@ -7,7 +7,7 @@ import { bgDarkPath, bgLightPath } from 'src/app/utilities/constants';
 export class ThemeService {
   public systemTheme: string = '';
   public bgPath: string = '';
-
+  
   constructor() { }
 
   systemPrefersDarkMode(): boolean {
@@ -25,10 +25,10 @@ export class ThemeService {
 
   defineBg(): void {
     if (this.theme === 'dark') {
-      this.bgPath = bgDarkPath;  
+      this.bgPath = bgDarkPath;
     }
     else if (this.theme === 'light') {
-      this.bgPath = bgLightPath;
+      this.bgPath = bgLightPath; 
     }
   }
 
