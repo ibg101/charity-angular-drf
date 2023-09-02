@@ -1,9 +1,14 @@
-<img 
-  class="
-    tw-object-cover
-    tw-absolute tw--z-10 tw-inset-0
-  "
-  [ngSrc]="theme.bgPath"
-  priority="true"
-  fill="true" 
->
+<ng-container>
+  <img *ngIf="theme.theme === 'dark'" 
+    class="tw-object-cover tw-absolute tw--z-10 tw-inset-0" 
+    [ngSrc]="theme.bgDarkPath" 
+    priority="true" 
+    fill="true"
+  >
+  <img *ngIf="theme.theme === 'light'" 
+    class="tw-object-cover tw-absolute tw--z-10 tw-inset-0" 
+    [ngSrc]="theme.bgLightPath" 
+    priority="true" 
+    fill="true"
+  >
+</ng-container>

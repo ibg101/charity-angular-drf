@@ -37,7 +37,6 @@ export class RightPartComponent implements OnInit, OnDestroy {
     else {
       this.theme.setTheme('light');
     }
-    this.theme.defineBg();
     this.theme.setFill('true');
   }
 }

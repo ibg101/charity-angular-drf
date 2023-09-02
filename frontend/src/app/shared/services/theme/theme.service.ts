@@ -6,7 +6,8 @@ import { bgDarkPath, bgLightPath } from 'src/app/utilities/constants';
 })
 export class ThemeService {
   public systemTheme: string = '';
-  public bgPath: string = '';
+  public bgDarkPath: string = bgDarkPath;
+  public bgLightPath: string = bgLightPath;
   
   constructor() { }
 
@@ -23,15 +24,6 @@ export class ThemeService {
     }
   }
 
-  defineBg(): void {
-    if (this.theme === 'dark') {
-      this.bgPath = bgDarkPath;
-    }
-    else if (this.theme === 'light') {
-      this.bgPath = bgLightPath; 
-    }
-  }
-
   // cant be used as standalone function. ! use in pair with defineSystemTheme
   toggleClassTheme(): void {
     const htmlElement = document.documentElement as HTMLElement;
@@ -45,7 +37,6 @@ export class ThemeService {
 
   toggleTheme(): void {
     this.defineSystemTheme();
-    this.defineBg();
     this.toggleClassTheme();
   }    
   
