@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/auth/services/auth.service';
 
@@ -7,21 +7,16 @@ import { AuthService } from 'src/app/auth/services/auth.service';
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],  
 })
-export class InputComponent implements OnInit {
+export class InputComponent {
   @Input() public label: string = '';
   @Input() public placeholder: string = '';
   @Input() public labelCustomFont: string = '';
   @Input() public isCheckbox: boolean = false;
   @Input() public control: FormControl<any> = new FormControl();
-  public inputType: string = '';
 
   constructor(
     private auth: AuthService,
   ) { }
-
-  ngOnInit(): void {
-    this.isCheckbox ? this.inputType = 'checkbox' : this.inputType = 'text'; 
-  }
 
   toggleCheckboxState(event: Event): void {
     const checked: boolean = (event.target as HTMLInputElement).checked;
