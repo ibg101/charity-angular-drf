@@ -1,40 +1,42 @@
-<div class="
-  tw-flex tw-flex-col tw-gap-y-7 tw-items-center
-  tw-pt-14 sm:tw-pt-16 md:tw-pt-20 lg:tw-pt-24
-  tw-px-6 sm:tw-px-0
-  ">
-  <h1 class="
-    tw-text-center 
-    tw-font-bold tw-tracking-tight tw-leading-9
-    tw-text-2xl
-    tw-text-gray-900 dark:tw-text-gray-50
-  ">Sign up to your account</h1>
-
+<form [formGroup]="auth.authForm">
   <div class="
-    tw-flex tw-flex-col tw-gap-y-4 
-    tw-w-full tw-max-w-md sm:tw-max-w-sm
+    tw-flex tw-flex-col tw-gap-y-7 tw-items-center
+    tw-pt-14 sm:tw-pt-16 md:tw-pt-20 lg:tw-pt-24
+    tw-px-6 sm:tw-px-0
     ">
-    <app-input label="email" placeholder="john@example.com">Email</app-input>
-    <app-input label="username" placeholder="anonymous">Username</app-input>
-    <app-input label="password">Password</app-input>
-    <app-input label="confirm-password">Confirm Password</app-input>
+    <h1 class="
+      tw-text-center 
+      tw-font-bold tw-tracking-tight tw-leading-9
+      tw-text-2xl
+      tw-text-gray-900 dark:tw-text-gray-50
+    ">Sign up to your account</h1>
 
     <div class="
-      tw-flex tw-justify-start tw-items-center tw-gap-x-2">
-      <app-input [isCheckbox]="true"></app-input>
-      <h1 class="tw-text-sm tw-leading-6 tw-text-gray-700 dark:tw-text-gray-200">Remember me for 12 days</h1>
-    </div>
+      tw-flex tw-flex-col tw-gap-y-4 
+      tw-w-full tw-max-w-md sm:tw-max-w-sm
+      ">
+      <app-input [control]="auth.getControl('email')" label="email" placeholder="john@example.com">Email</app-input>
+      <app-input [control]="auth.getControl('username')" label="username" placeholder="anonymous">Username</app-input>
+      <app-input [control]="auth.getControl('password')" label="password">Password</app-input>
+      <app-input [control]="auth.getControl('confirmPassword')" label="confirm-password">Confirm Password</app-input>
 
-    <app-button [isAuthButton]="true" [routerLink]="link.auth['signUp']">Sign Up</app-button>
+      <div class="
+        tw-flex tw-justify-start tw-items-center tw-gap-x-2">
+        <app-input [control]="auth.getControl('rememberMe')" [isCheckbox]="true"></app-input>
+        <h1 class="tw-text-sm tw-leading-6 tw-text-gray-700 dark:tw-text-gray-200">Remember me for 12 days</h1>
+      </div>
 
-    <div class="tw-flex tw-justify-center tw-items-center tw-text-sm">
-      <h1 class="tw-text-gray-500">Already have an account?&nbsp;</h1>
-      <app-router-link [applyHover]="false" [routerLink]="link.auth['signIn']" 
-        class="
-          tw-font-medium tw-leading-6
-        tw-text-indigo-600 hover:tw-text-indigo-500
-        dark:tw-text-indigo-400 dark:hover:tw-text-indigo-300
-        ">Sign in now</app-router-link>
+      <app-button [isAuthButton]="true" [routerLink]="link.auth['signUp']">Sign Up</app-button>
+
+      <div class="tw-flex tw-justify-center tw-items-center tw-text-sm">
+        <h1 class="tw-text-gray-500">Already have an account?&nbsp;</h1>
+        <app-router-link [applyHover]="false" [routerLink]="link.auth['signIn']" 
+          class="
+            tw-font-medium tw-leading-6
+          tw-text-indigo-600 hover:tw-text-indigo-500
+          dark:tw-text-indigo-400 dark:hover:tw-text-indigo-300
+          ">Sign in now</app-router-link>
+      </div>
     </div>
   </div>
-</div>
+</form>

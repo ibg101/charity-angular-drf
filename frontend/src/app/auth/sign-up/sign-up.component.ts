@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LinksService } from 'src/app/shared/services/links/links.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -7,5 +8,8 @@ import { LinksService } from 'src/app/shared/services/links/links.service';
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent {
-  constructor(public link: LinksService) { }
+  constructor(
+    public auth: AuthService,
+    public link: LinksService,
+  ) { }
 }

@@ -11,7 +11,7 @@ export class InputComponent implements OnInit {
   @Input() public placeholder: string = '';
   @Input() public labelCustomFont: string = '';
   @Input() public isCheckbox: boolean = false;
-  @Input() public control: FormControl = new FormControl();
+  @Input() public control: FormControl<any> = new FormControl();
   public inputType: string = '';
 
   ngOnInit(): void {
