@@ -4,7 +4,13 @@
   <label *ngIf="!isCheckbox" for="{{ label }}" class="tw-font-medium tw-text-sm tw-leading-6 tw-text-gray-800 dark:tw-text-gray-100">
     <ng-content></ng-content>
   </label>
-  <input placeholder="{{ placeholder }}" [type]="inputType" id="{{ label }}" [formControl]="control"  [ngClass]="
+  <input
+    [formControl]="control"
+    [type]="inputType"
+    (change)="toggleCheckboxState($event)"
+    placeholder="{{ placeholder }}"  
+    id="{{ label }}"   
+    [ngClass]="
       !isCheckbox ?
       'tw-rounded-md tw-border-0 tw-py-1.5 tw-px-3 tw-text-gray-900 placeholder:tw-text-gray-400 sm:tw-text-sm sm:tw-leading-6 tw-shadow-sm tw-outline-none tw-ring-1 tw-ring-inset tw-ring-gray-300 focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-indigo-600 dark:tw-bg-slate-800 dark:tw-text-gray-100 dark:placeholder:tw-text-gray-500 dark:tw-ring-gray-700  dark:focus:tw-ring-indigo-500'
       :
