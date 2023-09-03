@@ -1,4 +1,4 @@
-<form [formGroup]="auth.authForm">
+<form [formGroup]="signUpForm">
   <div class="
     tw-flex tw-flex-col tw-gap-y-7 tw-items-center
     tw-pt-14 sm:tw-pt-16 md:tw-pt-20 lg:tw-pt-24
@@ -15,14 +15,14 @@
       tw-flex tw-flex-col tw-gap-y-4 
       tw-w-full tw-max-w-md sm:tw-max-w-sm
       ">
-      <app-input [control]="auth.getControl('email')" label="email" placeholder="john@example.com">Email</app-input>
-      <app-input [control]="auth.getControl('username')" label="username" placeholder="anonymous">Username</app-input>
-      <app-input [control]="auth.getControl('password')" label="password">Password</app-input>
-      <app-input [control]="auth.getControl('confirmPassword')" label="confirm-password">Confirm Password</app-input>
+      <app-input [control]="auth.authForm.emailControl" label="email" placeholder="john@example.com">Email</app-input>
+      <app-input [control]="auth.authForm.usernameControl" label="username" placeholder="anonymous">Username</app-input>
+      <app-input [control]="auth.authForm.passwordControl" label="password">Password</app-input>
+      <app-input [control]="auth.authForm.confirmPasswordControl" label="confirm-password">Confirm Password</app-input>
 
       <div class="
         tw-flex tw-justify-start tw-items-center tw-gap-x-2">
-        <app-input [control]="auth.getControl('rememberMe')" [isCheckbox]="true"></app-input>
+        <app-input [control]="auth.authForm.rememberMeControl" [isCheckbox]="true"></app-input>
         <h1 class="tw-text-sm tw-leading-6 tw-text-gray-700 dark:tw-text-gray-200">Remember me for 12 days</h1>
       </div>
 

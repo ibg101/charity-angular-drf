@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
@@ -10,7 +10,6 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 export class InputComponent {
   @Input() public label: string = '';
   @Input() public placeholder: string = '';
-  @Input() public labelCustomFont: string = '';
   @Input() public isCheckbox: boolean = false;
   @Input() public control: FormControl<any> = new FormControl();
 
@@ -20,6 +19,6 @@ export class InputComponent {
 
   toggleCheckboxState(event: Event): void {
     const checked: boolean = (event.target as HTMLInputElement).checked;
-    this.auth.getControl('rememberMe').setValue(checked);
+    this.auth.authForm.rememberMeControl.setValue(checked);
   }
 }

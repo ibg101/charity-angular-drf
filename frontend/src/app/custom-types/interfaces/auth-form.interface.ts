@@ -1,9 +1,9 @@
-import { AbstractControl } from "@angular/forms";
+import { FormControl } from "@angular/forms";
 
 export interface IAuthForm {
-  email: AbstractControl<string | null>,
-  password: AbstractControl<string | null>,
-  rememberMe: AbstractControl<boolean | null>,
-  username?: AbstractControl<string | null>,
-  confirmPassword?: AbstractControl<string | null>,
+  emailControl: FormControl<string | null>,
+  usernameControl: FormControl<string | null>,
+  passwordControl: FormControl<string | null>,
+  confirmPasswordControl: FormControl<string | null>,
+  rememberMeControl: FormControl<boolean | null>,
 }
