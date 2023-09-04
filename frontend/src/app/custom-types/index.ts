@@ -1,6 +1,9 @@
+// interfaces
 export { IEnvironment } from './interfaces/environment.interface';
 export { ILink } from './interfaces/links.interface';
-export { IUser } from './interfaces/user.interface';
-export { IAuthForm } from './interfaces/auth-form.interface';
-export { ISignInForm } from './interfaces/sign-in-form.interface';
-export { ISignUpForm } from './interfaces/sign-up-form.interface';
+export { IUser } from './interfaces/auth/user.interface';
+export { IAuthForm } from './interfaces/auth/auth-form.interface';
+export { ISignInForm } from './interfaces/auth/sign-in-form.interface';
+export { ISignUpForm } from './interfaces/auth/sign-up-form.interface';
+// types
+export { FormOption } from './types/auth/form-option.type';

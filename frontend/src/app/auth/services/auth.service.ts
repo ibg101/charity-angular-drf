@@ -8,6 +8,7 @@ import {
   ISignInForm, 
   ISignUpForm,
   IEnvironment,
+  FormOption,
 } from 'src/app/custom-types';
 import { AbstractApiService } from 'src/app/shared/services/abstract/abstract-api.service';
 import { emailPattern, passwordPattern } from 'src/app/utilities/constants';
@@ -40,6 +41,27 @@ export class AuthService extends AbstractApiService {
     @Inject(ENVIRONMENT) env: IEnvironment,
   ) {
     super(http, env)
+  }
+
+  /**
+   * 
+   * @param authForm - select which instance to retrieve by explicitly setting appropriated instanceName: true.
+   */
+  defineInstance(formOption: FormOption): IUser | undefined {
+    const email: string = this.authForm.emailControl.value as string;
+    const username: string = this.authForm.usernameControl.value as string;
+    const password: string = this.authForm.passwordControl.value as string;
+    const confirmPassword: string = this.authForm.confirmPasswordControl.value as string;
+    const rememberMe: boolean = this.authForm.rememberMeControl.value as boolean;
+    
+    switch(true) {
+      case formOption.signIn:
+        return { email, password, rememberMe }
+      case formOption.signUp:
+        return { email, username, password, confirmPassword, rememberMe }
+      default:
+        return undefined;
+    }
   }
 
   getUser(id: number): Observable<IUser | HttpErrorResponse> {

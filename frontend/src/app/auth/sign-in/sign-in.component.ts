@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { LinksService } from 'src/app/shared/services/links/links.service';
 import { AuthService } from '../services/auth.service';
-import { ISignInForm } from 'src/app/custom-types';
+import { ISignInForm, IUser } from 'src/app/custom-types';
 
 @Component({
   selector: 'app-sign-in',
@@ -15,9 +15,14 @@ export class SignInComponent {
     password: this.auth.authForm.passwordControl,
     rememberMe: this.auth.authForm.rememberMeControl,
   })
+  public user: IUser = this.auth.defineInstance({ signIn: true }) as IUser;
 
   constructor(
     public auth: AuthService,
     public link: LinksService,
   ) { }
+
+  signIn(): void {
+    
+  }
 }
