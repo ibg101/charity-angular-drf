@@ -7,4 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class ButtonComponent {
   @Input() public isAuthButton: boolean = false;
+  @Input() public isDisabled: boolean = false;
 }
