@@ -42,6 +42,14 @@ export class AuthService extends AbstractApiService {
     super(http, env)
   }
 
+  getUser(id: number): Observable<IUser | HttpErrorResponse> {
+    return this.get(id, this.relativePath);
+  }
+
+  getAllUsers(): Observable<IUser | IUser[] | HttpErrorResponse> {
+    return this.getAll(this.relativePath);
+  }
+
   authenticate(body: IUser, headers?: HttpHeaders): Observable<IUser | HttpErrorResponse> {
     return this.post(this.relativePath, body, headers ? headers : undefined) as Observable<IUser | HttpErrorResponse>;
   }

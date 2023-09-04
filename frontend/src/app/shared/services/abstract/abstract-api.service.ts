@@ -8,9 +8,9 @@ export abstract class AbstractApiService {
 
   constructor(protected http: HttpClient, protected env: IEnvironment) {}
 
-  get<T>(id: number, relativePath: string): Observable<T | T[] | HttpErrorResponse> {
+  get<T>(id: number, relativePath: string): Observable<T | HttpErrorResponse> {
     const absolutePath = this.craftUrl(id, relativePath); 
-    return this.http.get<T | T[] | HttpErrorResponse>(absolutePath).pipe(
+    return this.http.get<T | HttpErrorResponse>(absolutePath).pipe(
       catchError((err: HttpErrorResponse) => of(this.error = err))
     );
   }
