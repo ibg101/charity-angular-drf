@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -41,16 +41,17 @@ export class AuthService extends AbstractApiService {
     super(http, env)
   }
 
-  authenticate(body: IUser): Observable<IUser | HttpErrorResponse> {
-    return this.post(this.relativePath, body) as Observable<IUser | HttpErrorResponse>;
+  authenticate(body: IUser, headers?: HttpHeaders): Observable<IUser | HttpErrorResponse> {
+    return this.post(this.relativePath, body, headers ? headers : undefined) as Observable<IUser | HttpErrorResponse>;
   }
 
   registerUser(body: IUser): Observable<IUser | HttpErrorResponse> {
-    return this.authenticate(body);
+    const headers = new HttpHeaders()
+      .set('Require-AuthToken', 'false') 
+    return this.authenticate(body, headers);
   }
 
   loginUser(body: IUser): Observable<IUser | HttpErrorResponse> {
-    // require authtoken
     return this.authenticate(body);
   }
 }

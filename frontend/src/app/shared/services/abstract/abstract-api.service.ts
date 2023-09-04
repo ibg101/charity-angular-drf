@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Observable, catchError, of } from "rxjs";
 import { IEnvironment } from "src/app/custom-types";
 
@@ -22,9 +22,9 @@ export abstract class AbstractApiService {
     )
   }
 
-  post<T>(relativePath: string, body: T | T[]): Observable<T | T[] | HttpErrorResponse> {
+  post<T>(relativePath: string, body: T | T[], headers?: HttpHeaders): Observable<T | T[] | HttpErrorResponse> {
     const absolutePath = this.craftUrl(undefined, relativePath);
-    return this.http.post<T | T[] | HttpErrorResponse>(absolutePath, body).pipe(
+    return this.http.post<T | T[] | HttpErrorResponse>(absolutePath, body, { headers: headers ? headers : undefined }).pipe(
       catchError((err: HttpErrorResponse) => of(this.error = err))
     );
   }
