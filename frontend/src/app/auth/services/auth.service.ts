@@ -1,18 +1,26 @@
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { 
+import { Observable } from 'rxjs';
+import {
+  IUser, 
   IAuthForm, 
   ISignInForm, 
-  ISignUpForm
+  ISignUpForm,
+  IEnvironment,
 } from 'src/app/custom-types';
+import { AbstractApiService } from 'src/app/shared/services/abstract/abstract-api.service';
+import { emailPattern } from 'src/app/utilities/constants';
+import { ENVIRONMENT } from 'src/app/utilities/injection-tokens';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService extends AbstractApiService {
   public authForm: IAuthForm = {
     emailControl: new FormControl('', [
       Validators.required,
+      Validators.pattern(emailPattern),
     ]),
     usernameControl: new FormControl('', []),
     passwordControl: new FormControl('', [
@@ -23,6 +31,25 @@ export class AuthService {
     ]),
     rememberMeControl: new FormControl(false),
   }
+  private relativePath: string = 'users';
   
-  constructor() { }
+  constructor(
+    http: HttpClient,
+    @Inject(ENVIRONMENT) env: IEnvironment,
+  ) {
+    super(http, env)
+  }
+
+  authenticate(body: IUser): Observable<IUser | HttpErrorResponse> {
+    return this.post(this.relativePath, body) as Observable<IUser | HttpErrorResponse>;
+  }
+
+  registerUser(body: IUser): Observable<IUser | HttpErrorResponse> {
+    return this.authenticate(body);
+  }
+
+  loginUser(body: IUser): Observable<IUser | HttpErrorResponse> {
+    // require authtoken
+    return this.authenticate(body);
+  }
 }

@@ -9,6 +9,13 @@ import { HomeModule } from './home/home.module';
 import { NavbarModule } from './navbar/navbar.module';
 import { FancyBgModule } from './fancy-bg/fancy-bg.module';
 import { NotFoundComponent } from './not-found/not-found.component';
+// injection tokens
+import { ENVIRONMENT } from './utilities/injection-tokens';
+// injection token values/classes
+import { environment } from 'src/environments/environment.development';
+// interceptors array
+import { httpInterceptorProviders } from './shared/http-interceptors';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +33,11 @@ import { NotFoundComponent } from './not-found/not-found.component';
     FancyBgModule,
     SharedModule,
   ],
-  providers: [],
+  providers: [
+    httpInterceptorProviders,
+    // injection tokens
+    { provide: ENVIRONMENT, useValue: environment },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
