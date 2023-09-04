@@ -4,6 +4,7 @@ import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { JsonHeaderInterceptor } from "./json-header-interceptor";
 
 
+// while adding new interceptors, please CONSIDER their ORDER
 export const httpInterceptorProviders = [
   { provide: HTTP_INTERCEPTORS,  useClass: JsonHeaderInterceptor, multi: true },
 ]

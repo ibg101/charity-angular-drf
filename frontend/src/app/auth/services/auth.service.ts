@@ -10,7 +10,7 @@ import {
   IEnvironment,
 } from 'src/app/custom-types';
 import { AbstractApiService } from 'src/app/shared/services/abstract/abstract-api.service';
-import { emailPattern } from 'src/app/utilities/constants';
+import { emailPattern, passwordPattern } from 'src/app/utilities/constants';
 import { ENVIRONMENT } from 'src/app/utilities/injection-tokens';
 
 @Injectable({
@@ -25,6 +25,7 @@ export class AuthService extends AbstractApiService {
     usernameControl: new FormControl('', []),
     passwordControl: new FormControl('', [
       Validators.required,
+      Validators.pattern(passwordPattern),
     ]),
     confirmPasswordControl: new FormControl('', [
       Validators.required,
