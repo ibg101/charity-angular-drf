@@ -5,6 +5,8 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthTokenInterceptor } from '../shared/http-interceptors/auth-token-interceptor';
 
 
 
@@ -18,6 +20,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     AuthRoutingModule,
     ReactiveFormsModule,
     SharedModule,
+  ],
+  providers: [
+    // http-interceptors that are used only locally !
+    { provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor,  multi: true }
   ]
 })
 export class AuthModule { }

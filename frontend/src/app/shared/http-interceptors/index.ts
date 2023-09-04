@@ -1,4 +1,5 @@
-// this file is kinda 'barrel' for serving httpInterceptors
+// this file is kinda GLOBAL 'barrel' for serving httpInterceptors.
+// for adding interceptors locally, consider adding them directly to the appropriated module.
 
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { JsonHeaderInterceptor } from "./json-header-interceptor";

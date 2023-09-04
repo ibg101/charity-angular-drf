@@ -32,6 +32,7 @@ export class AuthService extends AbstractApiService {
     ]),
     rememberMeControl: new FormControl(false),
   }
+  public authToken: string = '';
   private relativePath: string = 'users';
   
   constructor(
