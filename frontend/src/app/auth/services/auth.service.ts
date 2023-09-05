@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription, map } from 'rxjs';
 import {
   IUser,
@@ -9,7 +9,8 @@ import {
   ISignInForm, 
   ISignUpForm,
   IEnvironment,
-  FormOption,
+  SignInForm,
+  SignUpForm,
 } from 'src/app/custom-types';
 import { AbstractApiService } from 'src/app/shared/services/abstract/abstract-api.service';
 import { emailPattern, passwordPattern } from 'src/app/utilities/constants';
@@ -53,34 +54,48 @@ export class AuthService extends AbstractApiService {
 
   /**
    * 
-   * @param user - define User model Template.
-   * @param formOption - select which instance to retrieve by explicitly setting appropriated instanceName: true. 
-   * @returns returns Subscription Array in case the need of unsubscribing from them. 
+   * @param form - specify the current FormGroup instance.
+   * @param user - specify the current User Template Model. 
+   * @returns returns Subscription in case the need of unsubscribing from it.
    */
-  initInstance(user: IUser, formOption: FormOption): Subscription[] | undefined {
-    const email$ = this.user$.email$;
-    const username$ = this.user$.username$;
-    const password$ = this.user$.password$;
-    const confirmPassword$ = this.user$.confirmPassword$;
-    const rememberMe$ = this.user$.rememberMe$;
-
-    const subscriptions: Subscription[] = [
-      email$.pipe(map((data: string | null) => user.email = data as string)).subscribe(),
-      password$.pipe(map((data: string | null) => user.password = data as string)).subscribe(),
-      rememberMe$.pipe(map((data: boolean | null) => user.rememberMe = data as boolean)).subscribe(),
-    ];
+  initInstance(form: FormGroup<SignInForm | SignUpForm>, user: IUser): Subscription | undefined {
+    // this inner func cant be used as a standalone, so placed inside outer method.
+    const initGeneric = (
+        instance: Partial<{
+          email: string | null,
+          password: string | null,
+          rememberMe: boolean | null,
+      }>
+    ): void => {
+      user.email = instance.email as string;
+      user.password = instance.password as string;
+      user.rememberMe = instance.rememberMe as boolean;
+    };
 
     switch(true) {
-      case formOption.signIn:
-        return subscriptions;
-      case formOption.signUp:
-        subscriptions.push(
-          username$.pipe(map((data: string | null) => user.username = data as string)).subscribe(),
-          confirmPassword$.pipe(map((data: string | null) => user.confirmPassword = data as string)).subscribe(),
-        );
-        return subscriptions;
+      // Using SignInForm | SignUpForm classes instead of interfaces to be able to access current form instance.
+      case form instanceof SignInForm:
+        const signIn$ = (form as FormGroup<SignInForm>).valueChanges;
+        return signIn$
+          .pipe(
+            map(instance => {
+              initGeneric(instance);
+            })
+          )
+          .subscribe();
+      case form instanceof SignUpForm:
+        const signUp$ = (form as FormGroup<SignUpForm>).valueChanges;
+        return signUp$
+          .pipe(
+            map(instance => {
+              initGeneric(instance);
+              user.username = instance.username as string;
+              user.confirmPassword = instance.confirmPassword as string;
+            })
+          )
+          .subscribe();
       default:
-        return undefined;
+        throw new Error('Invalid type of Form specified.');
     }
   }
 
