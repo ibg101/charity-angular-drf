@@ -1,7 +1,4 @@
-/**
- * @deprecated
- */
 export type FormOption = {
-  signIn?: boolean,
-  signUp?: boolean,
+  isSignIn?: boolean,
+  isSignUp?: boolean,
 }

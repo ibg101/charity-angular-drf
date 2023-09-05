@@ -11,6 +11,7 @@ import {
   IEnvironment,
   SignInForm,
   SignUpForm,
+  FormOption,
 } from 'src/app/custom-types';
 import { AbstractApiService } from 'src/app/shared/services/abstract/abstract-api.service';
 import { emailPattern, passwordPattern } from 'src/app/utilities/constants';
@@ -56,9 +57,10 @@ export class AuthService extends AbstractApiService {
    * 
    * @param form - specify the current FormGroup instance.
    * @param user - specify the current User Template Model. 
+   * @param formOption - specify the Form to define the correct instance. 
    * @returns returns Subscription in case the need of unsubscribing from it.
    */
-  initInstance(form: FormGroup<SignInForm | SignUpForm>, user: IUser): Subscription | undefined {
+  initInstance(form: FormGroup<SignInForm> | FormGroup<SignUpForm>, user: IUser, formOption: FormOption): Subscription | undefined {
     // this inner func cant be used as a standalone, so placed inside outer method.
     const initGeneric = (
         instance: Partial<{
@@ -71,10 +73,12 @@ export class AuthService extends AbstractApiService {
       user.password = instance.password as string;
       user.rememberMe = instance.rememberMe as boolean;
     };
+    const isSignIn: boolean = form instanceof FormGroup && formOption.isSignIn as boolean;
+    const isSignUp: boolean = form instanceof FormGroup && formOption.isSignUp as boolean;
 
     switch(true) {
       // Using SignInForm | SignUpForm classes instead of interfaces to be able to access current form instance.
-      case form instanceof SignInForm:
+      case isSignIn:
         const signIn$ = (form as FormGroup<SignInForm>).valueChanges;
         return signIn$
           .pipe(
@@ -83,7 +87,7 @@ export class AuthService extends AbstractApiService {
             })
           )
           .subscribe();
-      case form instanceof SignUpForm:
+      case isSignUp:
         const signUp$ = (form as FormGroup<SignUpForm>).valueChanges;
         return signUp$
           .pipe(

@@ -32,6 +32,6 @@ export class SignUpComponent {
   ) { }
 
   signUp(): void {
-  
+    this.auth.initInstance(this.signUpForm, this.user, { isSignUp: true });
   }
 }
