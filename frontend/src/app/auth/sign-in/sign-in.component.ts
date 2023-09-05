@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { LinksService } from 'src/app/shared/services/links/links.service';
 import { AuthService } from '../services/auth.service';
@@ -9,7 +9,7 @@ import { ISignInForm, IUser } from 'src/app/custom-types';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
-export class SignInComponent {
+export class SignInComponent implements OnInit {
   public signInForm: FormGroup<ISignInForm> = new FormGroup<ISignInForm>({
     email: this.auth.authForm.emailControl,
     password: this.auth.authForm.passwordControl,
@@ -27,7 +27,11 @@ export class SignInComponent {
     public link: LinksService,
   ) { }
 
+  ngOnInit(): void {
+    this.auth.initInstance(this.signInForm, this.user, { isSignIn: true });
+  }
+
   signIn(): void {
-    
+    console.log(this.user);
   }
 }

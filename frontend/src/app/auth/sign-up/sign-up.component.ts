@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { LinksService } from 'src/app/shared/services/links/links.service';
 import { AuthService } from '../services/auth.service';
@@ -9,7 +9,7 @@ import { ISignUpForm, IUser } from 'src/app/custom-types';
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss']
 })
-export class SignUpComponent {
+export class SignUpComponent implements OnInit {
   public signUpForm: FormGroup<ISignUpForm> = new FormGroup<ISignUpForm>({
     email: this.auth.authForm.emailControl,
     username: this.auth.authForm.usernameControl,
@@ -31,7 +31,11 @@ export class SignUpComponent {
     public link: LinksService,
   ) { }
 
-  signUp(): void {
+  ngOnInit(): void {
     this.auth.initInstance(this.signUpForm, this.user, { isSignUp: true });
+  }
+
+  signUp(): void {
+    console.log(this.user);
   }
 }
