@@ -45,13 +45,14 @@ export abstract class AbstractApiService {
 
   // helper methods
   craftUrl(id?: number, relativePath?: string): string {
+    // please consider adding trailing slash at the end, otherwise -> server error, since current drf setup forces it 
     switch(true) {
       case !!id && !!relativePath:
-        return `${this.url}/${relativePath}/${id}`;
+        return `${this.url}/${relativePath}/${id}/`;
       case !!relativePath:
-        return `${this.url}/${relativePath}`;
+        return `${this.url}/${relativePath}/`;
       default:
-        return this.url;
+        return `${this.url}/`;
     }
   }
 }

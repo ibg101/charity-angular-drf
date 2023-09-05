@@ -15,7 +15,12 @@ export class SignInComponent {
     password: this.auth.authForm.passwordControl,
     rememberMe: this.auth.authForm.rememberMeControl,
   })
-  public user: IUser = this.auth.defineInstance({ signIn: true }) as IUser;
+  public user: IUser = {
+    id: 0,
+    email: '',
+    password: '',
+    rememberMe: false,
+  }
 
   constructor(
     public auth: AuthService,

@@ -14,7 +14,7 @@ export class AuthTokenInterceptor implements HttpInterceptor {
   constructor(private auth: AuthService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (req.headers.has('Require-AuthToken') && req.headers.get('Require-AuthToken') === 'false' ) {
+    if (req.headers.has('require-authtoken') && req.headers.get('require-authtoken') === 'false' ) {
       return next.handle(req);  
     }
     else {

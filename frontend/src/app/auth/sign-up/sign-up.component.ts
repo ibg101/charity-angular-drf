@@ -17,7 +17,14 @@ export class SignUpComponent {
     confirmPassword: this.auth.authForm.confirmPasswordControl,
     rememberMe: this.auth.authForm.rememberMeControl,
   })
-  public user: IUser = this.auth.defineInstance({ signUp: true }) as IUser;
+  public user: IUser = {
+    id: 0,
+    email: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
+    rememberMe: false,
+  }
 
   constructor(
     public auth: AuthService,
@@ -25,6 +32,6 @@ export class SignUpComponent {
   ) { }
 
   signUp(): void {
-    this.auth.registerUser(this.user).subscribe();
+  
   }
 }

@@ -1,9 +1,10 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subscription, map } from 'rxjs';
 import {
-  IUser, 
+  IUser,
+  IUser$, 
   IAuthForm, 
   ISignInForm, 
   ISignUpForm,
@@ -33,6 +34,13 @@ export class AuthService extends AbstractApiService {
     ]),
     rememberMeControl: new FormControl(false),
   }
+  public user$: IUser$ = {
+    email$: this.authForm.emailControl.valueChanges,
+    username$: this.authForm.usernameControl.valueChanges,
+    password$: this.authForm.passwordControl.valueChanges,
+    confirmPassword$: this.authForm.confirmPasswordControl.valueChanges,
+    rememberMe$: this.authForm.rememberMeControl.valueChanges,
+  }
   public authToken: string = '';
   private relativePath: string = 'users';
   
@@ -45,20 +53,32 @@ export class AuthService extends AbstractApiService {
 
   /**
    * 
-   * @param authForm - select which instance to retrieve by explicitly setting appropriated instanceName: true.
+   * @param user - define User model Template.
+   * @param formOption - select which instance to retrieve by explicitly setting appropriated instanceName: true. 
+   * @returns returns Subscription Array in case the need of unsubscribing from them. 
    */
-  defineInstance(formOption: FormOption): IUser | undefined {
-    const email: string = this.authForm.emailControl.value as string;
-    const username: string = this.authForm.usernameControl.value as string;
-    const password: string = this.authForm.passwordControl.value as string;
-    const confirmPassword: string = this.authForm.confirmPasswordControl.value as string;
-    const rememberMe: boolean = this.authForm.rememberMeControl.value as boolean;
-    
+  initInstance(user: IUser, formOption: FormOption): Subscription[] | undefined {
+    const email$ = this.user$.email$;
+    const username$ = this.user$.username$;
+    const password$ = this.user$.password$;
+    const confirmPassword$ = this.user$.confirmPassword$;
+    const rememberMe$ = this.user$.rememberMe$;
+
+    const subscriptions: Subscription[] = [
+      email$.pipe(map((data: string | null) => user.email = data as string)).subscribe(),
+      password$.pipe(map((data: string | null) => user.password = data as string)).subscribe(),
+      rememberMe$.pipe(map((data: boolean | null) => user.rememberMe = data as boolean)).subscribe(),
+    ];
+
     switch(true) {
       case formOption.signIn:
-        return { email, password, rememberMe }
+        return subscriptions;
       case formOption.signUp:
-        return { email, username, password, confirmPassword, rememberMe }
+        subscriptions.push(
+          username$.pipe(map((data: string | null) => user.username = data as string)).subscribe(),
+          confirmPassword$.pipe(map((data: string | null) => user.confirmPassword = data as string)).subscribe(),
+        );
+        return subscriptions;
       default:
         return undefined;
     }
@@ -78,7 +98,7 @@ export class AuthService extends AbstractApiService {
 
   registerUser(body: IUser): Observable<IUser | HttpErrorResponse> {
     const headers = new HttpHeaders()
-      .set('Require-AuthToken', 'false') 
+      .set('require-authtoken', 'false') 
     return this.authenticate(body, headers);
   }
 
