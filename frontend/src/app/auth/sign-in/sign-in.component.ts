@@ -32,6 +32,6 @@ export class SignInComponent implements OnInit {
   }
 
   signIn(): void {
-    console.log(this.user);
+    this.auth.loginUser(this.user);
   }
 }

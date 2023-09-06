@@ -36,6 +36,6 @@ export class SignUpComponent implements OnInit {
   }
 
   signUp(): void {
-    console.log(this.user);
+    this.auth.registerUser(this.user);
   }
 }

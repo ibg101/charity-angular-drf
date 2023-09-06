@@ -9,5 +9,3 @@ export { ISignUpForm } from './interfaces/auth/sign-up-form.interface';
 // types
 export { FormOption } from './types/auth/form-option.type';
 // classes
-export { SignInForm } from './classes/auth/sign-in.class';
-export { SignUpForm } from './classes/auth/sign-up.class';

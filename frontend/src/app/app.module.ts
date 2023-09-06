@@ -14,7 +14,7 @@ import { ENVIRONMENT } from './utilities/injection-tokens';
 // injection token values/classes
 import { environment } from 'src/environments/environment.development';
 // interceptors array
-import { httpInterceptorProviders } from './shared/http-interceptors';
+import { httpInterceptorProviders } from './shared/http/http-interceptors';
 
 
 @NgModule({

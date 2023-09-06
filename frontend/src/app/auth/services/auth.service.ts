@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription, map, tap } from 'rxjs';
+import { Observable, Subscription, map } from 'rxjs';
 import {
   IUser,
   IUser$, 
@@ -9,8 +9,6 @@ import {
   ISignInForm, 
   ISignUpForm,
   IEnvironment,
-  SignInForm,
-  SignUpForm,
   FormOption,
 } from 'src/app/custom-types';
 import { AbstractApiService } from 'src/app/shared/services/abstract/abstract-api.service';
@@ -60,7 +58,7 @@ export class AuthService extends AbstractApiService {
    * @param formOption - specify the Form to define the correct instance. 
    * @returns returns Subscription in case the need of unsubscribing from it.
    */
-  initInstance(form: FormGroup<SignInForm> | FormGroup<SignUpForm>, user: IUser, formOption: FormOption): Subscription | undefined {
+  initInstance(form: FormGroup<ISignInForm> | FormGroup<ISignUpForm>, user: IUser, formOption: FormOption): Subscription | undefined {
     // this inner func cant be used as a standalone, so placed inside outer method.
     const initGeneric = (
         instance: Partial<{
@@ -79,7 +77,7 @@ export class AuthService extends AbstractApiService {
     switch(true) {
       // Using SignInForm | SignUpForm classes instead of interfaces to be able to access current form instance.
       case isSignIn:
-        const signIn$ = (form as FormGroup<SignInForm>).valueChanges;
+        const signIn$ = (form as FormGroup<ISignInForm>).valueChanges;
         return signIn$
           .pipe(
             map(instance => {
@@ -88,7 +86,7 @@ export class AuthService extends AbstractApiService {
           )
           .subscribe();
       case isSignUp:
-        const signUp$ = (form as FormGroup<SignUpForm>).valueChanges;
+        const signUp$ = (form as FormGroup<ISignUpForm>).valueChanges;
         return signUp$
           .pipe(
             map(instance => {
@@ -103,25 +101,34 @@ export class AuthService extends AbstractApiService {
     }
   }
 
-  getUser(id: number): Observable<IUser | HttpErrorResponse> {
-    return this.get(id, this.relativePath);
+  getUser(user_id: number): Observable<IUser | HttpErrorResponse> {
+    return this.get(user_id, this.relativePath);
   }
 
   getAllUsers(): Observable<IUser | IUser[] | HttpErrorResponse> {
     return this.getAll(this.relativePath);
   }
 
-  authenticate(body: IUser, headers?: HttpHeaders): Observable<IUser | HttpErrorResponse> {
-    return this.post(this.relativePath, body, headers ? headers : undefined) as Observable<IUser | HttpErrorResponse>;
+  authenticate(user: IUser, headers?: HttpHeaders): Subscription {
+    return (this.post<IUser>(this.relativePath, user, headers ? headers : undefined) as Observable<IUser>)
+      .pipe(
+        map(
+          (response: IUser) => {
+            response.authtoken ? this.authToken = response.authtoken : ''; 
+            return response;
+          }
+        )
+       )
+      .subscribe({complete: () => console.log(this.authToken)});
   }
 
-  registerUser(body: IUser): Observable<IUser | HttpErrorResponse> {
+  registerUser(user: IUser): Subscription {
     const headers = new HttpHeaders()
       .set('require-authtoken', 'false') 
-    return this.authenticate(body, headers);
+    return this.authenticate(user, headers);
   }
 
-  loginUser(body: IUser): Observable<IUser | HttpErrorResponse> {
-    return this.authenticate(body);
+  loginUser(user: IUser): Subscription {
+    return this.authenticate(user);
   }
 }

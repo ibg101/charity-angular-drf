@@ -8,16 +8,16 @@ export abstract class AbstractApiService {
 
   constructor(protected http: HttpClient, protected env: IEnvironment) {}
 
-  get<T>(id: number, relativePath: string): Observable<T | HttpErrorResponse> {
+  get<T>(id: number, relativePath: string, headers?: HttpHeaders): Observable<T | HttpErrorResponse> {
     const absolutePath = this.craftUrl(id, relativePath); 
-    return this.http.get<T | HttpErrorResponse>(absolutePath).pipe(
+    return this.http.get<T | HttpErrorResponse>(absolutePath, { headers: headers ? headers : undefined }).pipe(
       catchError((err: HttpErrorResponse) => of(this.error = err))
     );
   }
 
-  getAll<T>(relativePath: string): Observable<T[] | HttpErrorResponse> {
+  getAll<T>(relativePath: string, headers?: HttpHeaders): Observable<T[] | HttpErrorResponse> {
     const absolutePath = this.craftUrl(undefined, relativePath);
-    return this.http.get<T[] | HttpErrorResponse>(absolutePath).pipe(
+    return this.http.get<T[] | HttpErrorResponse>(absolutePath, { headers: headers ? headers : undefined }).pipe(
       catchError((err: HttpErrorResponse) => of(this.error = err))
     )
   }
@@ -29,9 +29,9 @@ export abstract class AbstractApiService {
     );
   }
 
-  put<T>(id: number, relativePath: string, body: T): Observable<T | HttpErrorResponse> {
+  put<T>(id: number, relativePath: string, body: T, headers?: HttpHeaders): Observable<T | HttpErrorResponse> {
     const absolutePath = this.craftUrl(id, relativePath);
-    return this.http.put<T | HttpErrorResponse>(absolutePath, body).pipe(
+    return this.http.put<T | HttpErrorResponse>(absolutePath, body, { headers: headers ? headers : undefined }).pipe(
       catchError((err: HttpErrorResponse) => of(this.error = err))
     )
   }
