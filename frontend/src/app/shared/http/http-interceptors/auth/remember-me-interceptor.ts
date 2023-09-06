@@ -7,6 +7,7 @@ import {
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { IUser } from "src/app/custom-types";
+import { AuthOnly } from "../../headers";
 
 /**
 * Excludes RememberMe property from the req.body object, since there's no need to pass this field yet
