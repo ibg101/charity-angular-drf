@@ -16,9 +16,12 @@ import { AuthOnly } from "../../headers";
 @Injectable()
 export class RememberMeInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<IUser>, next: HttpHandler): Observable<HttpEvent<any>> {
-    delete req.body?.rememberMe;
-    const modifiedBody = { ...req.body };
-    const modifiedReq = req.clone({ body: modifiedBody });
-    return next.handle(modifiedReq);
+    if (req.headers.has(AuthOnly.key)) {
+      delete req.body?.rememberMe;
+      const modifiedBody = { ...req.body };
+      const modifiedReq = req.clone({ body: modifiedBody });
+      return next.handle(modifiedReq);
+    }
+    return next.handle(req);
   }
 }

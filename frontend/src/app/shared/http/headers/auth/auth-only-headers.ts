@@ -2,11 +2,11 @@ import { HttpHeaders } from "@angular/common/http";
 import { IHttpHeaders } from "src/app/custom-types";
 
 
-const key: string = 'auth-only';
-const value: string = ''; 
+const headerName: string = "auth-only";
+const headerValue: string = ""; 
 
 export const AuthOnly: IHttpHeaders = {
-  key: key,
-  value: value,
-  headers: new HttpHeaders().set(key, value) 
+  key: headerName,
+  value: headerValue,
+  headers: new HttpHeaders().set(headerName, headerValue), 
 }

@@ -11,7 +11,7 @@ import {
   IEnvironment,
   FormOption,
 } from 'src/app/custom-types';
-import { AuthOnly, RequireToken } from 'src/app/shared/http/headers';
+import { AuthOnly, NoTokenRequired } from 'src/app/shared/http/headers';
 import { AbstractApiService } from 'src/app/shared/services/abstract/abstract-api.service';
 import { emailPattern, passwordPattern } from 'src/app/utilities/constants';
 import { ENVIRONMENT } from 'src/app/utilities/injection-tokens';
@@ -114,8 +114,8 @@ export class AuthService extends AbstractApiService {
    * Can be specified addtional HttpHeaders key-value pair.  
    */
   authenticate(user: IUser, headersName?: string, headersValue?: string): Subscription {
-    const headers = headersName && headersValue ? AuthOnly.headers.append(headersName, headersValue) : AuthOnly.headers;
-    console.log(headers.keys());
+    // since headersValue can be '' use only headersName in comparison
+    const headers = headersName ? AuthOnly.headers.append(headersName, headersValue as string) : AuthOnly.headers;
     return (this.post<IUser>(this.relativePath, user, headers) as Observable<IUser>)
       .pipe(
         map(
@@ -129,7 +129,7 @@ export class AuthService extends AbstractApiService {
   }
 
   registerUser(user: IUser): Subscription {
-    return this.authenticate(user, RequireToken.key, RequireToken.value);
+    return this.authenticate(user, NoTokenRequired.key, NoTokenRequired.value);
   }
 
   loginUser(user: IUser): Subscription {
