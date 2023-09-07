@@ -5,5 +5,5 @@ export interface IUser {
   rememberMe?: boolean,
   username?: string,
   confirmPassword?: string,
-  authtoken?: string,
+  token?: string,
 }

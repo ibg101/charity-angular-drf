@@ -16,7 +16,7 @@ import { AuthOnly } from "../../headers";
 * Renames Angular's camelCase confirmPassword to DRF's snake_case confirm_password.
 */
 @Injectable()
-export class ModifyAuthBodyInterceptor implements HttpInterceptor {
+export class AuthBodyInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<IUser>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.headers.has(AuthOnly.key)) {
       const confirm_password = req.body?.confirmPassword;

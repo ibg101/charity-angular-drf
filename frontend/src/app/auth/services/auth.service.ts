@@ -120,7 +120,7 @@ export class AuthService extends AbstractApiService {
       .pipe(
         map(
           (response: IUser) => {
-            response.authtoken ? this.authToken = response.authtoken : ''; 
+            response.token ? this.authToken = response.token : ''; 
             return response;
           }
         )
