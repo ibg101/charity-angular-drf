@@ -1,7 +1,10 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Observable, catchError, of } from "rxjs";
-import { IEnvironment } from "src/app/custom-types";
+import { IEnvironment, IHeadersOrUndefined } from "src/app/custom-types";
 
+/**
+ * Core API Service that provides generic methods to work with API calls.
+ */
 export abstract class AbstractApiService {
   public error: HttpErrorResponse | null = null;
   private url: string = this.env.apiUrl;
@@ -10,36 +13,36 @@ export abstract class AbstractApiService {
 
   get<T>(id: number, relativePath: string, headers?: HttpHeaders): Observable<T | HttpErrorResponse> {
     const absolutePath = this.craftUrl(id, relativePath); 
-    return this.http.get<T | HttpErrorResponse>(absolutePath, { headers: headers ? headers : undefined }).pipe(
-      catchError((err: HttpErrorResponse) => of(this.error = err))
+    return this.http.get<T | HttpErrorResponse>(absolutePath, this.setHeaders(headers)).pipe(
+      catchError(this.handleError()),
     );
   }
 
   getAll<T>(relativePath: string, headers?: HttpHeaders): Observable<T[] | HttpErrorResponse> {
     const absolutePath = this.craftUrl(undefined, relativePath);
-    return this.http.get<T[] | HttpErrorResponse>(absolutePath, { headers: headers ? headers : undefined }).pipe(
-      catchError((err: HttpErrorResponse) => of(this.error = err))
+    return this.http.get<T[] | HttpErrorResponse>(absolutePath, this.setHeaders(headers)).pipe(
+      catchError(this.handleError()),
     )
   }
 
   post<T>(relativePath: string, body: T | T[], headers?: HttpHeaders): Observable<T | T[] | HttpErrorResponse> {
     const absolutePath = this.craftUrl(undefined, relativePath);
-    return this.http.post<T | T[] | HttpErrorResponse>(absolutePath, body, { headers: headers ? headers : undefined }).pipe(
-      catchError((err: HttpErrorResponse) => of(this.error = err))
+    return this.http.post<T | T[] | HttpErrorResponse>(absolutePath, body, this.setHeaders(headers)).pipe(
+      catchError(this.handleError()),
     );
   }
 
   put<T>(id: number, relativePath: string, body: T, headers?: HttpHeaders): Observable<T | HttpErrorResponse> {
     const absolutePath = this.craftUrl(id, relativePath);
-    return this.http.put<T | HttpErrorResponse>(absolutePath, body, { headers: headers ? headers : undefined }).pipe(
-      catchError((err: HttpErrorResponse) => of(this.error = err))
+    return this.http.put<T | HttpErrorResponse>(absolutePath, body, this.setHeaders(headers)).pipe(
+      catchError(this.handleError()),
     )
   }
 
   delete(id: number, relativePath: string): Observable<void | HttpErrorResponse> {
     const absolutePath = this.craftUrl(id, relativePath);
     return this.http.delete<void | HttpErrorResponse>(absolutePath).pipe(
-      catchError((err: HttpErrorResponse) => of(this.error = err))
+      catchError(this.handleError()),
     )
   }
 
@@ -54,5 +57,16 @@ export abstract class AbstractApiService {
       default:
         return `${this.url}/`;
     }
+  }
+
+  handleError() {
+    return (err: HttpErrorResponse): Observable<HttpErrorResponse> => {
+      console.error(err);
+      return of(this.error = err);
+    }
+  }
+
+  setHeaders(headers?: HttpHeaders): IHeadersOrUndefined {
+    return { headers: headers ? headers : undefined };
   }
 }
