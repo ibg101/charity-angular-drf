@@ -22,11 +22,11 @@ export function getItem(key: string, cookie?: CookieService): string | undefined
 }
 
 function clearStorage(key: string, cookie?: CookieService): void {
-  try {
-    // deleting both to prevent any bugs
+  if (sessionStorage.getItem(key)) {
     cookie?.delete(key);
+  }
+  else if (cookie?.get(key)) {
     sessionStorage.removeItem(key);
   }
-  catch(err) { }
   return;
 }

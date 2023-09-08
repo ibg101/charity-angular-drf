@@ -28,3 +28,15 @@ class UserSerializer(serializers.ModelSerializer):
         instance.set_password(validated_data.pop('password'))
         instance.set_password(validated_data.pop('confirm_password'))
         return super().update(instance, validated_data)
+    
+
+class ObtainAuthTokenSerializer(serializers.ModelSerializer):
+    """
+    Serializer, that excludes username, confirm_password fields to fit Sign-in form.
+    """
+    # must override this field, since i use the same db model and email field is unique (while creating a new instance).
+    # however this is not the case
+    email = serializers.EmailField()
+    class Meta:
+        model = get_user_model()
+        fields = ('id', 'email', 'password')

@@ -3,10 +3,9 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
 
 from .db_queries import Queries
-from .serializer import UserSerializer
+from .serializer import UserSerializer, ObtainAuthTokenSerializer
 from .helper_functions import get_id_or_email
 from .custom_permissions import IsOwnerOrAdmin
 from rest_framework.permissions import IsAuthenticated
@@ -39,8 +38,8 @@ class UsersApiView(APIView):
       if serializer.is_valid():
          serializer.save()
          # accessing id by currently created instance, whose data were validated, to ensure there're no vulns 
-         instance = serializer.instance.id
-         token, created = Token.objects.get_or_create(user_id=instance)
+         instance_id = serializer.instance.id
+         token = Queries().get_token(instance_id)
          data = serializer.data
          data.update({
             'token': token.key
@@ -69,3 +68,13 @@ class UsersApiView(APIView):
        else:
          return Response(status=status.HTTP_400_BAD_REQUEST)
        
+
+class CustomObtainAuthToken(APIView):
+   def post(self, request, *args, **kwargs):
+      serializer = ObtainAuthTokenSerializer(data=request.data)
+      if serializer.is_valid(raise_exception=True):
+         user = Queries().get_user_by_field({'email': serializer.validated_data['email']})
+         if user is not None:
+            token = Queries().get_token(user_id=user.id)
+            return Response({'token': token.key, 'username': user.username})
+         return Response(status=status.HTTP_404_NOT_FOUND)

@@ -113,13 +113,16 @@ export class AuthService extends AbstractApiService {
   }
 
   /**
-   * Can be specified addtional HttpHeaders key-value pair.  
+   * Can be specified addtional HttpHeaders key-value pair. 
+   * 
+   * @param isLogin if true, changes the relativePath to 'auth'. 
    */
-  authenticate(user: IUser, headersName?: string, headersValue?: string): Subscription {
+  authenticate(user: IUser, isLogin?: boolean, headersName?: string, headersValue?: string): Subscription {
+    const relativePath = isLogin ? 'auth' : this.relativePath;
     // since headersValue can be '' use only headersName in comparison
     const headers = headersName ? AuthOnly.headers.append(headersName, headersValue as string) : AuthOnly.headers;
     const rememberMe = user.rememberMe;
-    return (this.post<IUser>(this.relativePath, user, headers) as Observable<IUser>)
+    return (this.post<IUser>(relativePath, user, headers) as Observable<IUser>)
       .pipe(
         map(
           (response: IUser) => {
@@ -133,11 +136,11 @@ export class AuthService extends AbstractApiService {
   }
 
   registerUser(user: IUser): Subscription {
-    return this.authenticate(user, NoTokenRequired.key, NoTokenRequired.value);
+    return this.authenticate(user, false, NoTokenRequired.key, NoTokenRequired.value);
   }
 
   loginUser(user: IUser): Subscription {
-    return this.authenticate(user);
+    return this.authenticate(user, true);
   }
 
   get token(): string | undefined {

@@ -1,10 +1,11 @@
-from typing import Union, Dict
+from typing import Dict
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
 
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 
 
 class Queries(object):
@@ -26,3 +27,12 @@ class Queries(object):
         
     def get_all_users(self):
         return get_user_model().objects.only(*self.fields).all()
+    
+    def get_token(self, user_id: int):
+        """
+        Token can be retrieved by specifying either user_id or current user instance.
+        """
+        if user_id is not None:
+            token, created = Token.objects.get_or_create(user_id=user_id)
+            return token
+        return None
