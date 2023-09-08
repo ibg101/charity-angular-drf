@@ -38,11 +38,13 @@ class UsersApiView(APIView):
       if serializer.is_valid():
          serializer.save()
          # accessing id by currently created instance, whose data were validated, to ensure there're no vulns 
-         instance_id = serializer.instance.id
-         token = Queries().get_token(instance_id)
+         user_id = serializer.instance.id
+         username = serializer.validated_data['username']
+         token = Queries().get_token(user_id)
          data = serializer.data
          data.update({
-            'token': token.key
+            'token': token.key,
+            'username': username,
          })
          return Response(data=data, status=status.HTTP_201_CREATED)
       return Response(status=status.HTTP_400_BAD_REQUEST)

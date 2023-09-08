@@ -1,0 +1,7 @@
+<li>
+  <app-router-link *ngIf="auth.username else signIn">{{ auth.username }}</app-router-link>
+  
+  <ng-template #signIn>
+    <app-router-link [routerLink]="link.auth['signIn']">Sign In</app-router-link>
+  </ng-template>
+</li>

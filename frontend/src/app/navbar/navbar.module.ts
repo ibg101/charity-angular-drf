@@ -6,6 +6,7 @@ import { RightPartComponent } from './right-part/right-part.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { UlListComponent } from './ul-list/ul-list.component';
+import { AuthComponent } from './auth/auth.component';
 
 
 
@@ -15,6 +16,7 @@ import { UlListComponent } from './ul-list/ul-list.component';
     LeftPartComponent,
     RightPartComponent,
     UlListComponent,
+    AuthComponent,
   ],
   imports: [
     CommonModule,

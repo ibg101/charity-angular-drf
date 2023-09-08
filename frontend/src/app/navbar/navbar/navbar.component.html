@@ -20,10 +20,7 @@
   >
     <ng-container *ngIf="nav.activeBurger">
       <nav-ul-list className="tw-flex tw-flex-col tw-gap-y-1.5 md:tw-hidden"></nav-ul-list>
-    
-      <li class="md:tw-hidden">
-        <app-router-link [routerLink]="link.auth['signUp']">Sign Up</app-router-link>
-      </li>
+      <nav-auth class="md:tw-hidden"></nav-auth>
     </ng-container>
   </div>
 </div>

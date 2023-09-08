@@ -8,9 +8,7 @@
     <ng-container *ngTemplateOutlet="modes"></ng-container>
   </button>
 
-  <li class="tw-hidden md:tw-flex">
-    <app-router-link [routerLink]="link.auth['signUp']">Sign Up</app-router-link>
-  </li>
+  <nav-auth class="tw-hidden md:tw-flex"></nav-auth>
 
   <button (click)="nav.toggleNavBurger()" class="md:tw-hidden">
     <svg xmlns="http://www.w3.org/2000/svg" height="1.1em" viewBox="0 0 448 512" class="

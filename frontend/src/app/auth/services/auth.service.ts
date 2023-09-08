@@ -146,4 +146,8 @@ export class AuthService extends AbstractApiService {
   get token(): string | undefined {
     return getItem('token', this.cookie);
   }
+
+  get username(): string | undefined {
+    return getItem('username', this.cookie);
+  }
 }

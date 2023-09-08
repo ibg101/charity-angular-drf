@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { LinksService } from 'src/app/shared/services/links/links.service';
 import { AuthService } from '../services/auth.service';
 import { ISignUpForm, IUser } from 'src/app/custom-types';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -29,6 +30,7 @@ export class SignUpComponent implements OnInit {
   constructor(
     public auth: AuthService,
     public link: LinksService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -37,5 +39,7 @@ export class SignUpComponent implements OnInit {
 
   signUp(): void {
     this.auth.registerUser(this.user);
+    this.router.navigateByUrl(this.link.home);
+    return;
   }
 }
