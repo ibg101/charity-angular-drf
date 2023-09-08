@@ -17,7 +17,7 @@ export class RequireTokenInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (!req.headers.has(NoTokenRequired.key) && req.headers.has(AuthOnly.key)) {
       const modifiedReq = req.clone({
-        setHeaders: { 'Authorization': `Token ${this.auth.authToken}` }
+        setHeaders: { 'Authorization': `Token ${this.auth.token}` }
       });
       return next.handle(modifiedReq);
     }

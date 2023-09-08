@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
 import { Observable, Subscription, map } from 'rxjs';
 import {
   IUser,
@@ -13,6 +14,7 @@ import {
 } from 'src/app/custom-types';
 import { AuthOnly, NoTokenRequired } from 'src/app/shared/http/headers';
 import { AbstractApiService } from 'src/app/shared/services/abstract/abstract-api.service';
+import { setSessionOrCookie, getItem } from 'src/app/utilities/client/storage';
 import { emailPattern, passwordPattern } from 'src/app/utilities/constants';
 import { ENVIRONMENT } from 'src/app/utilities/injection-tokens';
 
@@ -42,12 +44,12 @@ export class AuthService extends AbstractApiService {
     confirmPassword$: this.authForm.confirmPasswordControl.valueChanges,
     rememberMe$: this.authForm.rememberMeControl.valueChanges,
   }
-  public authToken: string = '';
   private relativePath: string = 'users';
   
   constructor(
     http: HttpClient,
     @Inject(ENVIRONMENT) env: IEnvironment,
+    private cookie: CookieService,
   ) {
     super(http, env)
   }
@@ -116,16 +118,18 @@ export class AuthService extends AbstractApiService {
   authenticate(user: IUser, headersName?: string, headersValue?: string): Subscription {
     // since headersValue can be '' use only headersName in comparison
     const headers = headersName ? AuthOnly.headers.append(headersName, headersValue as string) : AuthOnly.headers;
+    const rememberMe = user.rememberMe;
     return (this.post<IUser>(this.relativePath, user, headers) as Observable<IUser>)
       .pipe(
         map(
           (response: IUser) => {
-            response.token ? this.authToken = response.token : ''; 
+            setSessionOrCookie('token', response.token as string, this.cookie, rememberMe);
+            setSessionOrCookie('username', response.username as string, this.cookie, rememberMe); 
             return response;
           }
         )
        )
-      .subscribe({complete: () => console.log(this.authToken)});
+      .subscribe();
   }
 
   registerUser(user: IUser): Subscription {
@@ -134,5 +138,9 @@ export class AuthService extends AbstractApiService {
 
   loginUser(user: IUser): Subscription {
     return this.authenticate(user);
+  }
+
+  get token(): string | undefined {
+    return getItem('token', this.cookie);
   }
 }

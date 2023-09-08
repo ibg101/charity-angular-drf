@@ -3,6 +3,7 @@ from typing import Any, Optional
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -28,6 +29,14 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     objects = CustomUserManager()
+    username = models.CharField(
+        unique=False,
+        max_length=150,
+        help_text=(
+            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+        ),
+        validators=[UnicodeUsernameValidator()],
+    )
     email = models.EmailField(blank=False, unique=True)
     confirm_password = models.CharField(max_length=128)
 

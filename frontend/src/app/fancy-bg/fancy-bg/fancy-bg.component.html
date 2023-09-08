@@ -11,4 +11,7 @@
     priority="true" 
     fill="true"
   >
+
+  <!-- preloading opposite bg to prevent delays -->
+  <img [src]="theme.theme === 'dark' ? theme.bgLightPath : theme.bgDarkPath" class="tw-hidden">
 </ng-container>
