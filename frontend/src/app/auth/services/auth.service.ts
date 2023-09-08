@@ -15,8 +15,13 @@ import {
 import { AuthOnly, NoTokenRequired } from 'src/app/shared/http/headers';
 import { AbstractApiService } from 'src/app/shared/services/abstract/abstract-api.service';
 import { setSessionOrCookie, getItem } from 'src/app/utilities/client/storage';
-import { emailPattern, passwordPattern } from 'src/app/utilities/constants';
-import { ENVIRONMENT } from 'src/app/utilities/injection-tokens';
+import { 
+  emailPattern, 
+  passwordPattern, 
+  ENVIRONMENT, 
+  invalidFormOption,
+} from 'src/app/utilities/constants';
+
 
 @Injectable({
   providedIn: 'root'
@@ -61,7 +66,8 @@ export class AuthService extends AbstractApiService {
    * @param formOption - specify the Form to define the correct instance. 
    * @returns returns Subscription in case the need of unsubscribing from it.
    */
-  initInstance(form: FormGroup<ISignInForm> | FormGroup<ISignUpForm>, user: IUser, formOption: FormOption): Subscription | undefined {
+  initInstance(form: FormGroup<ISignInForm> | FormGroup<ISignUpForm>, user: IUser, formOption: FormOption): Subscription | undefined {    
+    this.clearControls(form, formOption);
     // this inner func cant be used as a standalone, so placed inside outer method.
     const initGeneric = (
         instance: Partial<{
@@ -100,7 +106,32 @@ export class AuthService extends AbstractApiService {
           )
           .subscribe();
       default:
-        throw new Error('Invalid type of Form specified.');
+        throw new Error(invalidFormOption);
+    }
+  }
+
+  /**
+   * Required function due to:
+   * 
+   * Since Auth is using Separated User Instances, 
+   * switching between forms can produce bug with emptiness of the form while performing a requests.
+   */
+  clearControls(form: FormGroup<ISignInForm> | FormGroup<ISignUpForm>, formOption: FormOption): void {
+    const genericControls: {
+      email: string | null,
+      password: string | null,
+      rememberMe: boolean | null,
+    } = { email: null, password: null, rememberMe: null };
+
+    switch(true) {
+      case formOption.isSignIn:
+        (form as FormGroup<ISignInForm>).setValue(genericControls);
+        return;
+      case formOption.isSignUp:
+        (form as FormGroup<ISignUpForm>).setValue({ ...genericControls, username: null, confirmPassword: null });
+        return;
+      default:
+        throw new Error(invalidFormOption);
     }
   }
 
