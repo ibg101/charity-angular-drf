@@ -21,7 +21,7 @@ export function getItem(key: string, cookie?: CookieService): string | undefined
   return item;
 }
 
-function clearStorage(key: string, cookie?: CookieService): void {
+export function clearStorage(key: string, cookie?: CookieService): void {
   // deleting both items to prevent any related storage bugs
   try {
     sessionStorage.removeItem(key);

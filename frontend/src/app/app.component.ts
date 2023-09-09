@@ -9,7 +9,9 @@ import { ThemeService } from './shared/services/theme/theme.service';
 export class AppComponent implements OnInit {
   title = 'westrong';
 
-  constructor(private theme: ThemeService) { }
+  constructor(
+    private theme: ThemeService,
+  ) { }
 
   // toggling Dark mode, depending on system preferences
   ngOnInit(): void {

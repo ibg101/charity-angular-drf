@@ -36,3 +36,7 @@ class Queries(object):
             token, created = Token.objects.get_or_create(user_id=user_id)
             return token
         return None
+    
+
+def get_user_by_email(serializer):
+    return Queries().get_user_by_field({'email': serializer.validated_data['email']})

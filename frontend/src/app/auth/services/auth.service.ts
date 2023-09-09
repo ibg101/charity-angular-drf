@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { Observable, Subscription, map } from 'rxjs';
+import { Observable, Subscription, map, retry } from 'rxjs';
 import {
   IUser,
   IUser$, 
@@ -15,6 +15,7 @@ import {
 } from 'src/app/custom-types';
 import { AuthOnly, NoTokenRequired } from 'src/app/shared/http/headers';
 import { AbstractApiService } from 'src/app/shared/services/abstract/abstract-api.service';
+import { ApiEndpointService } from 'src/app/shared/services/api/api-endpoint.service';
 import { LinksService } from 'src/app/shared/services/links/links.service';
 import { setSessionOrCookie, getItem } from 'src/app/utilities/client/storage';
 import { 
@@ -60,9 +61,6 @@ export class AuthService extends AbstractApiService {
     confirmPassword$: this.authForm.confirmPasswordControl.valueChanges,
     rememberMe$: this.authForm.rememberMeControl.valueChanges,
   }
-  private relativePathUsers: string = 'users';
-  private relativePathLogin: string = 'users/login';
-  private relativePathLogout: string = 'users/logout';
   
   constructor(
     http: HttpClient,
@@ -70,6 +68,7 @@ export class AuthService extends AbstractApiService {
     private cookie: CookieService,
     private link: LinksService,
     private router: Router,
+    private api: ApiEndpointService,
   ) {
     super(http, env)
   }
@@ -150,11 +149,11 @@ export class AuthService extends AbstractApiService {
   }
 
   getUser(user_id: number): Observable<IUser | HttpErrorResponse> {
-    return this.get(user_id, this.relativePathUsers);
+    return this.get(user_id, this.api.pathUsers);
   }
 
   getAllUsers(): Observable<IUser | IUser[] | HttpErrorResponse> {
-    return this.getAll(this.relativePathUsers);
+    return this.getAll(this.api.pathUsers);
   }
 
   /**
@@ -163,16 +162,18 @@ export class AuthService extends AbstractApiService {
    * @param isLogin if true, changes the relativePath to 'auth'. 
    */
   authenticate(user: IUser, isLogin?: boolean, headersName?: string, headersValue?: string): Subscription {
-    const relativePath = isLogin ? this.relativePathLogin : this.relativePathUsers;
+    const relativePath = isLogin ? this.api.pathLogin : this.api.pathUsers;
     // since headersValue can be '' use only headersName in comparison
     const headers = headersName ? AuthOnly.headers.append(headersName, headersValue as string) : AuthOnly.headers;
     const rememberMe = user.rememberMe;
     return (this.post<IUser>(relativePath, user, headers) as Observable<IUser>)
       .pipe(
+        // retrying 3 times in case of error
+        retry(3),
         map(
           (response: IUser) => {
             response.token ? setSessionOrCookie('token', response.token, this.cookie, rememberMe) : undefined;
-            response.username ? setSessionOrCookie('username', response.username, this.cookie, rememberMe) : undefined;
+            response.email ? setSessionOrCookie('email', response.email, this.cookie, rememberMe) : undefined;
             this.error ?? this.router.navigateByUrl(this.link.home); 
             return response;
           }
@@ -190,14 +191,22 @@ export class AuthService extends AbstractApiService {
   }
 
   logoutUser(): Subscription {
-    return this.post(this.relativePathLogout, null).subscribe();
+    return this.post(this.api.pathLogout, this.emailBody).subscribe();
   }
 
   get token(): string | undefined {
     return getItem('token', this.cookie);
   }
 
-  get username(): string | undefined {
-    return getItem('username', this.cookie);
+  get email(): string | undefined {
+    return getItem('email', this.cookie);
+  }
+
+  /**
+   * Simplified version of user body, that contains only email field or null.
+   */
+  get emailBody(): { email: string } | null {
+    const body = this.email ? { email: this.email } : null;
+    return body;
   }
 }

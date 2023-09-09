@@ -40,3 +40,13 @@ class ObtainAuthTokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ('id', 'email', 'password')
+
+
+class UserEmailSerializer(serializers.ModelSerializer):
+    """
+    Tiny Serializer for Logout/Delete-token purposes ONLY.
+    """
+    email = serializers.EmailField()
+    class Meta:
+        model = get_user_model()
+        fields = ['email']
