@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { LinksService } from 'src/app/shared/services/links/links.service';
 import { AuthService } from '../services/auth.service';
 import { ISignUpForm, IUser } from 'src/app/custom-types';
+import { passwordsMatch } from '../validators/passwords-validator';
 
 @Component({
   selector: 'app-sign-up',
@@ -16,6 +17,8 @@ export class SignUpComponent implements OnInit {
     password: this.auth.authForm.passwordControl,
     confirmPassword: this.auth.authForm.confirmPasswordControl,
     rememberMe: this.auth.authForm.rememberMeControl,
+  }, {
+    validators: [passwordsMatch()],
   })
   public user: IUser = {
     id: 0,

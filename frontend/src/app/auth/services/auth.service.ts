@@ -30,18 +30,27 @@ import {
 })
 export class AuthService extends AbstractApiService {
   public authForm: IAuthForm = {
-    emailControl: new FormControl('', [
-      Validators.required,
-      Validators.pattern(emailPattern),
-    ]),
-    usernameControl: new FormControl('', []),
-    passwordControl: new FormControl('', [
-      Validators.required,
-      Validators.pattern(passwordPattern),
-    ]),
-    confirmPasswordControl: new FormControl('', [
-      Validators.required,
-    ]),
+    emailControl: new FormControl('', {
+      validators: [
+        Validators.required,
+        Validators.pattern(emailPattern),
+      ],
+      asyncValidators: []
+    }),
+    usernameControl: new FormControl('', {
+      validators: [],
+    }),
+    passwordControl: new FormControl('', {
+      validators: [
+        Validators.required,
+        Validators.pattern(passwordPattern),
+      ],
+    }),
+    confirmPasswordControl: new FormControl('', {
+      validators: [
+        Validators.required,
+      ],
+    }),
     rememberMeControl: new FormControl(false),
   }
   public user$: IUser$ = {
