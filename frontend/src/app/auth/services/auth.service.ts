@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, Subscription, map } from 'rxjs';
 import {
@@ -14,6 +15,7 @@ import {
 } from 'src/app/custom-types';
 import { AuthOnly, NoTokenRequired } from 'src/app/shared/http/headers';
 import { AbstractApiService } from 'src/app/shared/services/abstract/abstract-api.service';
+import { LinksService } from 'src/app/shared/services/links/links.service';
 import { setSessionOrCookie, getItem } from 'src/app/utilities/client/storage';
 import { 
   emailPattern, 
@@ -55,6 +57,8 @@ export class AuthService extends AbstractApiService {
     http: HttpClient,
     @Inject(ENVIRONMENT) env: IEnvironment,
     private cookie: CookieService,
+    private link: LinksService,
+    private router: Router,
   ) {
     super(http, env)
   }
@@ -157,8 +161,9 @@ export class AuthService extends AbstractApiService {
       .pipe(
         map(
           (response: IUser) => {
-            setSessionOrCookie('token', response.token as string, this.cookie, rememberMe);
-            setSessionOrCookie('username', response.username as string, this.cookie, rememberMe); 
+            response.token ? setSessionOrCookie('token', response.token, this.cookie, rememberMe) : undefined;
+            response.username ? setSessionOrCookie('username', response.username, this.cookie, rememberMe) : undefined;
+            this.error ?? this.router.navigateByUrl(this.link.home); 
             return response;
           }
         )

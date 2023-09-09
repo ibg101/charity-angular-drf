@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AbstractControl, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class InputComponent {
   @Input() public control: FormControl<any> = new FormControl();
 
   constructor(
-    private auth: AuthService,
+    public auth: AuthService,
   ) { }
 
   toggleCheckboxState(event: Event): void {
