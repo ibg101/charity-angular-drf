@@ -80,3 +80,9 @@ class CustomObtainAuthToken(APIView):
             token = Queries().get_token(user_id=user.id)
             return Response({'token': token.key, 'username': user.username})
          return Response(status=status.HTTP_404_NOT_FOUND)
+      
+
+class LogoutApiView(APIView):
+   def post(self, request, *args, **kwargs):
+      request.user.auth_token.delete()
+      return Response(status=status.HTTP_204_NO_CONTENT)

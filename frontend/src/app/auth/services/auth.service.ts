@@ -60,7 +60,9 @@ export class AuthService extends AbstractApiService {
     confirmPassword$: this.authForm.confirmPasswordControl.valueChanges,
     rememberMe$: this.authForm.rememberMeControl.valueChanges,
   }
-  private relativePath: string = 'users';
+  private relativePathUsers: string = 'users';
+  private relativePathLogin: string = 'users/login';
+  private relativePathLogout: string = 'users/logout';
   
   constructor(
     http: HttpClient,
@@ -97,7 +99,6 @@ export class AuthService extends AbstractApiService {
     const isSignUp: boolean = form instanceof FormGroup && formOption.isSignUp as boolean;
 
     switch(true) {
-      // Using SignInForm | SignUpForm classes instead of interfaces to be able to access current form instance.
       case isSignIn:
         const signIn$ = (form as FormGroup<ISignInForm>).valueChanges;
         return signIn$
@@ -149,11 +150,11 @@ export class AuthService extends AbstractApiService {
   }
 
   getUser(user_id: number): Observable<IUser | HttpErrorResponse> {
-    return this.get(user_id, this.relativePath);
+    return this.get(user_id, this.relativePathUsers);
   }
 
   getAllUsers(): Observable<IUser | IUser[] | HttpErrorResponse> {
-    return this.getAll(this.relativePath);
+    return this.getAll(this.relativePathUsers);
   }
 
   /**
@@ -162,7 +163,7 @@ export class AuthService extends AbstractApiService {
    * @param isLogin if true, changes the relativePath to 'auth'. 
    */
   authenticate(user: IUser, isLogin?: boolean, headersName?: string, headersValue?: string): Subscription {
-    const relativePath = isLogin ? 'auth' : this.relativePath;
+    const relativePath = isLogin ? this.relativePathLogin : this.relativePathUsers;
     // since headersValue can be '' use only headersName in comparison
     const headers = headersName ? AuthOnly.headers.append(headersName, headersValue as string) : AuthOnly.headers;
     const rememberMe = user.rememberMe;
@@ -186,6 +187,10 @@ export class AuthService extends AbstractApiService {
 
   loginUser(user: IUser): Subscription {
     return this.authenticate(user, true);
+  }
+
+  logoutUser(): Subscription {
+    return this.post(this.relativePathLogout, null).subscribe();
   }
 
   get token(): string | undefined {
