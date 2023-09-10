@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from django.utils import timezone
 
 from rest_framework import exceptions
 from rest_framework.authentication import TokenAuthentication
@@ -8,8 +8,17 @@ class ExpiryTokenAuthentication(TokenAuthentication):
     """
     Extended TokenAuthentication Class that provides Token expiry proccess.
     """
-    def __init__(self, expiry_date: int) -> None:
-        self.expiry_date = expiry_date
+    def __init__(self) -> None:
+        super().__init__()
+        self._expiry_date = 1
+
+    @property
+    def expiry_date(self):
+        return self._expiry_date
+
+    @expiry_date.setter
+    def expiry_date(self, value):
+        self._expiry_date = value
 
     def authenticate_credentials(self, key):
         model = self.get_model()    
@@ -21,7 +30,7 @@ class ExpiryTokenAuthentication(TokenAuthentication):
         if not token.user.is_active:
             raise exceptions.AuthenticationFailed('User inactive or deleted.')
 
-        expires_in = date.today() + timedelta(days=self.expiry_date)
+        expires_in = timezone.now() + timezone.timedelta(days=self.expiry_date)
         if token.created >= expires_in:
             raise exceptions.AuthenticationFailed('Authentication token is expired.')
 

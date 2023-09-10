@@ -8,10 +8,10 @@ from rest_framework.response import Response
 from .db_queries import Queries, get_user_by_email
 from .serializer import (
    UserSerializer, 
-   ObtainAuthTokenSerializer, 
+   UserMiniSerializer, 
    UserEmailSerializer,
 )
-from .helper_functions import get_id_or_email
+from .helper_functions import get_id_or_email, define_token_expiry
 from .custom_permissions import IsOwnerOrAdmin
 from .expiry_token_auth import ExpiryTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -19,9 +19,12 @@ from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 class UsersApiView(APIView):
-   expiry_days: int = 1; # by default set to 1 
    permission_classes = (IsAuthenticated, IsOwnerOrAdmin)
-   authentication_classes = [ExpiryTokenAuthentication(expiry_days)]
+   authentication_classes = [ExpiryTokenAuthentication]
+
+   def dispatch(self, request, *args, **kwargs):
+      define_token_expiry(request, UserSerializer)
+      return super().dispatch(request, *args, **kwargs)
 
    def get_permissions(self):
       permissions = super().get_permissions()
@@ -78,8 +81,12 @@ class UsersApiView(APIView):
        
 
 class LoginApiView(APIView):
+   def dispatch(self, request, *args, **kwargs):
+      define_token_expiry(request, UserMiniSerializer)
+      return super().dispatch(request, *args, **kwargs)
+
    def post(self, request, *args, **kwargs):
-      serializer = ObtainAuthTokenSerializer(data=request.data)
+      serializer = UserMiniSerializer(data=request.data)
       if serializer.is_valid(raise_exception=True):
          user = get_user_by_email(serializer)
          if user is not None:

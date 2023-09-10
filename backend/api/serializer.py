@@ -7,7 +7,7 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ('id', 'email', 'username', 'password', 'confirm_password')
+        fields = ('id', 'email', 'username', 'password', 'confirm_password', 'remember_me')
         extra_kwargs = {
             'password': {'write_only': True},
             'confirm_password': {'write_only': True},
@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
     
 
-class ObtainAuthTokenSerializer(serializers.ModelSerializer):
+class UserMiniSerializer(serializers.ModelSerializer):
     """
     Serializer, that excludes username, confirm_password fields to fit Sign-in form.
     """
@@ -39,7 +39,7 @@ class ObtainAuthTokenSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
     class Meta:
         model = get_user_model()
-        fields = ('id', 'email', 'password')
+        fields = ('id', 'email', 'password', 'remember_me')
 
 
 class UserEmailSerializer(serializers.ModelSerializer):

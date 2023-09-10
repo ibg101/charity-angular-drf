@@ -1,8 +1,8 @@
 from typing import Dict
-from datetime import date
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -34,7 +34,7 @@ class Queries(object):
             token, created = Token.objects.get_or_create(user_id=user_id)
             # !!! if token is not created, update it's date to perform proper validation
             if not created:
-                token.created = date.today()
+                token.created = timezone.now()
                 token.save()
             return token
         return None

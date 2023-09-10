@@ -39,6 +39,7 @@ class CustomUser(AbstractUser):
     )
     email = models.EmailField(blank=False, unique=True)
     confirm_password = models.CharField(max_length=128)
+    remember_me = models.BooleanField(default=False, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
