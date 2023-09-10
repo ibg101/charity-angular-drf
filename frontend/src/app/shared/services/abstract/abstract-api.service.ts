@@ -7,6 +7,7 @@ import { IEnvironment, IHeadersOrUndefined } from "src/app/custom-types";
  */
 export abstract class AbstractApiService {
   public error: HttpErrorResponse | null = null;
+  public retryAttempts: number = 3;
   private url: string = this.env.apiUrl;
 
   constructor(protected http: HttpClient, protected env: IEnvironment) {}

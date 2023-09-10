@@ -17,7 +17,7 @@ import { AuthOnly, NoTokenRequired } from 'src/app/shared/http/headers';
 import { AbstractApiService } from 'src/app/shared/services/abstract/abstract-api.service';
 import { ApiEndpointService } from 'src/app/shared/services/api/api-endpoint.service';
 import { LinksService } from 'src/app/shared/services/links/links.service';
-import { setSessionOrCookie, getItem } from 'src/app/utilities/client/storage';
+import { setSessionOrCookie, getItem, clearStorage } from 'src/app/utilities/client/storage';
 import { 
   emailPattern, 
   passwordPattern, 
@@ -166,14 +166,19 @@ export class AuthService extends AbstractApiService {
     // since headersValue can be '' use only headersName in comparison
     const headers = headersName ? AuthOnly.headers.append(headersName, headersValue as string) : AuthOnly.headers;
     const rememberMe = user.rememberMe;
+
+    const setAuthStorage = (response: IUser): void => {
+      response.token ? setSessionOrCookie('token', response.token, this.cookie, rememberMe) : undefined;
+      response.email ? setSessionOrCookie('email', response.email, this.cookie, rememberMe) : undefined;      
+    };
+
     return (this.post<IUser>(relativePath, user, headers) as Observable<IUser>)
       .pipe(
         // retrying 3 times in case of error
-        retry(3),
+        retry(this.retryAttempts),
         map(
           (response: IUser) => {
-            response.token ? setSessionOrCookie('token', response.token, this.cookie, rememberMe) : undefined;
-            response.email ? setSessionOrCookie('email', response.email, this.cookie, rememberMe) : undefined;
+            setAuthStorage(response);
             this.error ?? this.router.navigateByUrl(this.link.home); 
             return response;
           }
@@ -191,7 +196,18 @@ export class AuthService extends AbstractApiService {
   }
 
   logoutUser(): Subscription {
-    return this.post(this.api.pathLogout, this.emailBody).subscribe();
+    const clearAuthStorage = (): void => {
+      clearStorage('token', this.cookie);
+      clearStorage('email', this.cookie);
+    };
+
+    return this.post(this.api.pathLogout, this.emailBody).pipe(
+      retry(this.retryAttempts),
+      map(response => {
+        this.error ?? clearAuthStorage();
+        return response;
+      })
+    ).subscribe();
   }
 
   get token(): string | undefined {

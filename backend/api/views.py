@@ -1,3 +1,4 @@
+from typing import Any
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.views import APIView
@@ -12,14 +13,15 @@ from .serializer import (
 )
 from .helper_functions import get_id_or_email
 from .custom_permissions import IsOwnerOrAdmin
+from .expiry_token_auth import ExpiryTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
 
 
 # Create your views here.
 class UsersApiView(APIView):
+   expiry_days: int = 1; # by default set to 1 
    permission_classes = (IsAuthenticated, IsOwnerOrAdmin)
-   authentication_classes = [TokenAuthentication]
+   authentication_classes = [ExpiryTokenAuthentication(expiry_days)]
 
    def get_permissions(self):
       permissions = super().get_permissions()
