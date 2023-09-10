@@ -1,4 +1,5 @@
 from typing import Dict
+from datetime import date
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
@@ -29,11 +30,12 @@ class Queries(object):
         return get_user_model().objects.only(*self.fields).all()
     
     def get_token(self, user_id: int):
-        """
-        Token can be retrieved by specifying either user_id or current user instance.
-        """
         if user_id is not None:
             token, created = Token.objects.get_or_create(user_id=user_id)
+            # !!! if token is not created, update it's date to perform proper validation
+            if not created:
+                token.created = date.today()
+                token.save()
             return token
         return None
     
