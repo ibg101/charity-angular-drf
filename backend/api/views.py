@@ -114,7 +114,7 @@ class CheckAuthToken(APIView):
    def post(self, request, *args, **kwargs):
       serializer = UserEmailSerializer(data=request.data)
       if serializer.is_valid(raise_exception=True):
-         user = get_user_by_email(serializer)
+         user = get_user_by_email(serializer=serializer)
          token = Queries().get_token(user_id=user.id)
          if token is not None:
             return Response({'token': token.key}, status=status.HTTP_200_OK)

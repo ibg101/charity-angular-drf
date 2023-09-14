@@ -210,6 +210,21 @@ export class AuthService extends AbstractApiService {
     ).subscribe();
   }
 
+  /**
+   * @returns true if token is valid, otherwise - false.
+   */
+  tokenIsValid(): boolean {
+    if (this.emailBody) {
+      this.post(this.api.pathTokenValidity, this.emailBody)
+        .pipe(
+          retry(this.retryAttempts),
+        )
+        .subscribe();
+      return this.error ? false : true;
+    }
+    return false;
+  }
+
   get token(): string | undefined {
     return getItem('token', this.cookie);
   }

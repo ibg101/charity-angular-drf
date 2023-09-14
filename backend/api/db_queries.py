@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Union
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
@@ -29,9 +29,15 @@ class Queries(object):
     def get_all_users(self):
         return get_user_model().objects.only(*self.fields).all()
     
-    def get_token(self, user_id: int):
-        if user_id is not None:
-            token, created = Token.objects.get_or_create(user_id=user_id)
+    def get_token(self, user_id: int, token: Union[str, None] = None):
+        """
+        Query DB to retrieve token by appropriated user's ID or token itself. 
+        """
+        if user_id or token is not None:
+            if user_id:
+                token, created = Token.objects.get_or_create(user_id=user_id)
+            elif token:
+                token, created = Token.objects.get_or_create(key=token)
             # !!! if token is not created, update it's date to perform proper validation
             if not created:
                 token.created = timezone.now()
