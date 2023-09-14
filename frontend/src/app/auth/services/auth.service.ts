@@ -61,6 +61,7 @@ export class AuthService extends AbstractApiService {
     confirmPassword$: this.authForm.confirmPasswordControl.valueChanges,
     rememberMe$: this.authForm.rememberMeControl.valueChanges,
   }
+  public isAuthenticated: boolean = false;
   
   constructor(
     http: HttpClient,
@@ -211,18 +212,20 @@ export class AuthService extends AbstractApiService {
   }
 
   /**
-   * @returns true if token is valid, otherwise - false.
+   * Sets isAuthenticated to true if token is valid, otherwise - false.
    */
-  tokenIsValid(): boolean {
+  checkTokenValidity(): void {
     if (this.emailBody) {
-      this.post(this.api.pathTokenValidity, this.emailBody)
+      const subscription = this.post(this.api.pathTokenValidity, this.emailBody)
         .pipe(
           retry(this.retryAttempts),
         )
-        .subscribe();
-      return this.error ? false : true;
+        .subscribe({
+          complete: () => { subscription.unsubscribe() }
+        });
+      this.isAuthenticated = this.error ? false : true;
     }
-    return false;
+    return;
   }
 
   get token(): string | undefined {

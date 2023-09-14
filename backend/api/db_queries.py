@@ -29,7 +29,7 @@ class Queries(object):
     def get_all_users(self):
         return get_user_model().objects.only(*self.fields).all()
     
-    def get_token(self, user_id: int, token: Union[str, None] = None):
+    def get_token(self, user_id: Union[int, None], token: Union[str, None] = None):
         """
         Query DB to retrieve token by appropriated user's ID or token itself. 
         """

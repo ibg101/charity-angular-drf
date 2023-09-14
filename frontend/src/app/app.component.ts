@@ -18,7 +18,6 @@ export class AppComponent implements OnInit {
   // toggling Dark mode, depending on system preferences
   ngOnInit(): void {
     this.theme.toggleTheme();
-    this.auth.tokenIsValid();
-    return;
+    this.auth.checkTokenValidity();
   }
 }
