@@ -1,9 +1,11 @@
+import json
 from typing import Any
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
+from django.core.exceptions import ObjectDoesNotExist
 
 from .db_queries import Queries, get_user_by_email
 from .serializer import (
@@ -102,8 +104,13 @@ class LogoutApiView(APIView):
    def post(self, request, *args, **kwargs):
       serializer = UserEmailSerializer(data=request.data)
       if serializer.is_valid(raise_exception=True):
-         user = get_user_by_email(serializer)
-         user.auth_token.delete()
+         try:         
+            user = get_user_by_email(serializer)
+            user.auth_token.delete()
+         except ObjectDoesNotExist as _:
+            pass
+         except AttributeError as err:
+            return Response({'error': json.dumps(str(err))}, status=status.HTTP_400_BAD_REQUEST)
          return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -111,11 +118,14 @@ class CheckAuthToken(APIView):
    """
    Invoke this endpoint to define whether auth-token exists or not.
    """
+
    def post(self, request, *args, **kwargs):
+      return Response(status=status.HTTP_400_BAD_REQUEST)
       serializer = UserEmailSerializer(data=request.data)
       if serializer.is_valid(raise_exception=True):
          user = get_user_by_email(serializer=serializer)
-         token = Queries().get_token(user_id=user.id)
-         if token is not None:
-            return Response({'token': token.key}, status=status.HTTP_200_OK)
+         if user is not None:
+            token = Queries().get_token(user_id=user.id)
+            if token is not None:
+               return Response({'token': token.key}, status=status.HTTP_200_OK)
          return Response(status=status.HTTP_404_NOT_FOUND)

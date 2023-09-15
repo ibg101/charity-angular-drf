@@ -2,6 +2,7 @@
 // Please, while considering adding a new route, add the link here first.
 
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { ILink } from 'src/app/custom-types';
 
 @Injectable({
@@ -20,5 +21,12 @@ export class LinksService {
   public sponsor: string = '/sponsor';
   public about: string = '/about';
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
+
+  redirectHome(): void {
+    this.router.navigateByUrl(this.home);
+    return;
+  }
 }

@@ -10,4 +10,5 @@ export { IHttpHeaders } from './interfaces/http/http-headers.interface';
 export { IHeadersOrUndefined } from './interfaces/http/headers-or-undefined.interface';
 // types
 export { FormOption } from './types/auth/form-option.type';
+export { ExtraParams } from './types/named-params/abstract-api/extra-params.type';
 // classes

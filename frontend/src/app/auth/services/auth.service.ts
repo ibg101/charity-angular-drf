@@ -1,9 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { Observable, Subscription, map, retry } from 'rxjs';
+import { Observable, Subscription, catchError, finalize, map, of, retry } from 'rxjs';
 import {
   IUser,
   IUser$, 
@@ -69,7 +68,6 @@ export class AuthService extends AbstractApiService {
     private cookie: CookieService,
     private storage: StorageService,
     private link: LinksService,
-    private router: Router,
     private api: ApiEndpointService,
   ) {
     super(http, env)
@@ -173,14 +171,14 @@ export class AuthService extends AbstractApiService {
       response.email ? this.cookie.set('email', response.email) : undefined;
     };
 
-    return (this.post<IUser>(relativePath, user, headers) as Observable<IUser>)
+    return (this.post<IUser>(relativePath, user, { headers }) as Observable<IUser>)
       .pipe(
         // retrying 3 times in case of error
         retry(this.retryAttempts),
         map(
           (response: IUser) => {
             setAuthStorage(response);
-            this.error ?? this.router.navigateByUrl(this.link.home); 
+            this.error ?? this.link.redirectHome(); 
             return response;
           }
         )
@@ -202,13 +200,20 @@ export class AuthService extends AbstractApiService {
       this.storage.clear('email');
     };
 
-    return this.post(this.api.pathLogout, this.emailBody).pipe(
-      retry(this.retryAttempts),
-      map(response => {
-        this.error ?? clearAuthStorage();
-        return response;
-      })
-    ).subscribe();
+    return this.post(this.api.pathLogout, this.emailBody, { assignError: false })
+      .pipe(
+        retry(this.retryAttempts),
+        // since i disabled error caching in abstract class, providing it here
+        catchError((err: HttpErrorResponse): never => {
+          throw new Error(err.message);
+        }),
+        map(response => {
+          clearAuthStorage();
+          this.link.redirectHome();
+          return response;
+        }),
+      )
+      .subscribe();
   }
 
   /**
@@ -216,14 +221,20 @@ export class AuthService extends AbstractApiService {
    */
   checkTokenValidity(): void {
     if (this.emailBody) {
-      const subscription = this.post(this.api.pathTokenValidity, this.emailBody)
+      const subscription = this.post(this.api.pathTokenValidity, this.emailBody, { disableCatchError: true })
         .pipe(
           retry(this.retryAttempts),
+          catchError((err: HttpErrorResponse): never => {
+            this.logoutUser();  
+            throw new Error(err.message);
+          }),
+          map(response => {
+            this.isAuthenticated = true;
+            return response;
+          }),
+          finalize(() => { subscription.unsubscribe() }),
         )
-        .subscribe({
-          complete: () => { subscription.unsubscribe() }
-        });
-      this.isAuthenticated = this.error ? false : true;
+        .subscribe();
     }
     return;
   }

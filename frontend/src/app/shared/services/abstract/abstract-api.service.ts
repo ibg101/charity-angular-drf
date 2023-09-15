@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Observable, catchError, of } from "rxjs";
-import { IEnvironment, IHeadersOrUndefined } from "src/app/custom-types";
+import { IEnvironment, IHeadersOrUndefined, ExtraParams } from "src/app/custom-types";
 
 /**
  * Core API Service that provides generic methods to work with API calls.
@@ -15,28 +15,34 @@ export abstract class AbstractApiService {
   get<T>(id: number, relativePath: string, headers?: HttpHeaders): Observable<T | HttpErrorResponse> {
     const absolutePath = this.craftUrl(id, relativePath); 
     return this.http.get<T | HttpErrorResponse>(absolutePath, this.setHeaders(headers)).pipe(
-      catchError(this.handleError()),
+      catchError(this.handleError() as () => Observable<HttpErrorResponse>),
     );
   }
 
   getAll<T>(relativePath: string, headers?: HttpHeaders): Observable<T[] | HttpErrorResponse> {
     const absolutePath = this.craftUrl(undefined, relativePath);
     return this.http.get<T[] | HttpErrorResponse>(absolutePath, this.setHeaders(headers)).pipe(
-      catchError(this.handleError()),
+      catchError(this.handleError() as () => Observable<HttpErrorResponse>),
     )
   }
 
-  post<T>(relativePath: string, body: T | T[], headers?: HttpHeaders): Observable<T | T[] | HttpErrorResponse> {
-    const absolutePath = this.craftUrl(undefined, relativePath);
-    return this.http.post<T | T[] | HttpErrorResponse>(absolutePath, body, this.setHeaders(headers)).pipe(
-      catchError(this.handleError()),
+  /**
+   * 
+   * @param assignError defines whether error handler should assign error to an error object. By default - true.
+   * @param disableCatchError set to true to disable default behavior and prodive error handling manually. 
+   */
+  post<T>(relativePath: string, body: T | T[], { headers, assignError, disableCatchError }: ExtraParams = { }): Observable<T | T[] | HttpErrorResponse | void> {
+    const absolutePath = this.craftUrl(undefined, relativePath); 
+    return this.http.post<T | T[] | HttpErrorResponse | void>(absolutePath, body, this.setHeaders(headers)).pipe(
+      // () => of() is acting no-op operator's role
+      disableCatchError ? () => of() : catchError(this.handleError(assignError)),
     );
   }
 
   put<T>(id: number, relativePath: string, body: T, headers?: HttpHeaders): Observable<T | HttpErrorResponse> {
     const absolutePath = this.craftUrl(id, relativePath);
     return this.http.put<T | HttpErrorResponse>(absolutePath, body, this.setHeaders(headers)).pipe(
-      catchError(this.handleError()),
+      catchError(this.handleError() as () => Observable<HttpErrorResponse>),
     )
   }
 
@@ -60,10 +66,10 @@ export abstract class AbstractApiService {
     }
   }
 
-  handleError() {
-    return (err: HttpErrorResponse): Observable<HttpErrorResponse> => {
-      console.error(err);
-      return of(this.error = err);
+  handleError(assignError: boolean = true) {
+    return (err: HttpErrorResponse): Observable<HttpErrorResponse | void> => {
+      const response = assignError ? of(this.error = err) : of(console.error(err));
+      return response;
     }
   }
 
