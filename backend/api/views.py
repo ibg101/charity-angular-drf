@@ -118,6 +118,8 @@ class CheckAuthToken(APIView):
    """
    Invoke this endpoint to define whether auth-token exists or not.
    """
+   permission_classes = (IsAuthenticated,)
+   authentication_classes = [ExpiryTokenAuthentication]
 
    def post(self, request, *args, **kwargs):
       serializer = UserEmailSerializer(data=request.data)

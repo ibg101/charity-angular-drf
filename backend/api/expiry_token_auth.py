@@ -6,7 +6,7 @@ from rest_framework.authentication import TokenAuthentication
 
 class ExpiryTokenAuthentication(TokenAuthentication):
     """
-    Extended TokenAuthentication Class that provides Token expiry proccess.
+    Extended TokenAuthentication Class that provides Token expiry process.
     """
     def __init__(self) -> None:
         super().__init__()

@@ -229,7 +229,10 @@ export class AuthService extends AbstractApiService {
    */
   checkTokenValidity(): void {
     if (this.emailBody) {
-      const subscription = this.post(this.api.pathTokenValidity, this.emailBody, { disableCatchError: true })
+      const subscription = this.post(this.api.pathTokenValidity, this.emailBody, { 
+        headers: AuthOnly.headers, 
+        disableCatchError: true,
+      })
         .pipe(
           retry(this.retryAttempts),
           catchError((err: HttpErrorResponse): never => {
