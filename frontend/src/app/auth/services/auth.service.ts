@@ -17,13 +17,13 @@ import { AuthOnly, NoTokenRequired } from 'src/app/shared/http/headers';
 import { AbstractApiService } from 'src/app/shared/services/abstract/abstract-api.service';
 import { ApiEndpointService } from 'src/app/shared/services/api/api-endpoint.service';
 import { LinksService } from 'src/app/shared/services/links/links.service';
-import { setSessionOrCookie, getItem, clearStorage } from 'src/app/utilities/client/storage';
 import { 
   emailPattern, 
   passwordPattern, 
   ENVIRONMENT, 
   invalidFormOption,
 } from 'src/app/utilities/constants';
+import { StorageService } from './storage.service';
 
 
 @Injectable({
@@ -67,6 +67,7 @@ export class AuthService extends AbstractApiService {
     http: HttpClient,
     @Inject(ENVIRONMENT) env: IEnvironment,
     private cookie: CookieService,
+    private storage: StorageService,
     private link: LinksService,
     private router: Router,
     private api: ApiEndpointService,
@@ -166,11 +167,10 @@ export class AuthService extends AbstractApiService {
     const relativePath = isLogin ? this.api.pathLogin : this.api.pathUsers;
     // since headersValue can be '' use only headersName in comparison
     const headers = headersName ? AuthOnly.headers.append(headersName, headersValue as string) : AuthOnly.headers;
-    const rememberMe = user.rememberMe;
 
     const setAuthStorage = (response: IUser): void => {
-      response.token ? setSessionOrCookie('token', response.token, this.cookie, rememberMe) : undefined;
-      response.email ? setSessionOrCookie('email', response.email, this.cookie, rememberMe) : undefined;      
+      response.token ? this.cookie.set('token', response.token) : undefined;
+      response.email ? this.cookie.set('email', response.email) : undefined;
     };
 
     return (this.post<IUser>(relativePath, user, headers) as Observable<IUser>)
@@ -198,8 +198,8 @@ export class AuthService extends AbstractApiService {
 
   logoutUser(): Subscription {
     const clearAuthStorage = (): void => {
-      clearStorage('token', this.cookie);
-      clearStorage('email', this.cookie);
+      this.storage.clear('token');
+      this.storage.clear('email');
     };
 
     return this.post(this.api.pathLogout, this.emailBody).pipe(
@@ -229,11 +229,11 @@ export class AuthService extends AbstractApiService {
   }
 
   get token(): string | undefined {
-    return getItem('token', this.cookie);
+    return this.storage.getItem('token');
   }
 
   get email(): string | undefined {
-    return getItem('email', this.cookie);
+    return this.storage.getItem('email');
   }
 
   /**
