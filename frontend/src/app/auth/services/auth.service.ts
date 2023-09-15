@@ -2,7 +2,15 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
-import { Observable, Subscription, catchError, finalize, map, of, retry } from 'rxjs';
+import { 
+  Observable, 
+  Subscription, 
+  catchError, 
+  finalize, 
+  map, 
+  retry,
+  of,
+} from 'rxjs';
 import {
   IUser,
   IUser$, 
@@ -225,14 +233,14 @@ export class AuthService extends AbstractApiService {
         .pipe(
           retry(this.retryAttempts),
           catchError((err: HttpErrorResponse): never => {
-            this.logoutUser();  
+            this.logoutUser();
             throw new Error(err.message);
           }),
           map(response => {
             this.isAuthenticated = true;
             return response;
           }),
-          finalize(() => { subscription.unsubscribe() }),
+          finalize(() => { subscription.unsubscribe() })
         )
         .subscribe();
     }

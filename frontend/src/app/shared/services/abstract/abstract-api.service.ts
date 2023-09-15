@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
-import { Observable, catchError, of } from "rxjs";
+import { Observable, catchError, of, identity } from "rxjs";
 import { IEnvironment, IHeadersOrUndefined, ExtraParams } from "src/app/custom-types";
 
 /**
@@ -35,7 +35,7 @@ export abstract class AbstractApiService {
     const absolutePath = this.craftUrl(undefined, relativePath); 
     return this.http.post<T | T[] | HttpErrorResponse | void>(absolutePath, body, this.setHeaders(headers)).pipe(
       // () => of() is acting no-op operator's role
-      disableCatchError ? () => of() : catchError(this.handleError(assignError)),
+      disableCatchError ? identity : catchError(this.handleError(assignError)),
     );
   }
 

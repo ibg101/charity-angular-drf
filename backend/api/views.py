@@ -120,7 +120,6 @@ class CheckAuthToken(APIView):
    """
 
    def post(self, request, *args, **kwargs):
-      return Response(status=status.HTTP_400_BAD_REQUEST)
       serializer = UserEmailSerializer(data=request.data)
       if serializer.is_valid(raise_exception=True):
          user = get_user_by_email(serializer=serializer)
