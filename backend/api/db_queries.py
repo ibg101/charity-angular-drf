@@ -29,15 +29,15 @@ class Queries(object):
     def get_all_users(self):
         return get_user_model().objects.only(*self.fields).all()
     
-    def get_token(self, user_id: Union[int, None], token: Union[str, None] = None):
+    def get_token(self, user_id: Union[int, None] = None, key: Union[str, None] = None):
         """
-        Query DB to retrieve token by appropriated user's ID or token itself. 
+        Query DB to retrieve token by appropriated user's ID or token key itself. 
         """
-        if user_id or token is not None:
+        if user_id or key is not None:
             if user_id:
                 token, created = Token.objects.get_or_create(user_id=user_id)
-            elif token:
-                token, created = Token.objects.get_or_create(key=token)
+            elif key:
+                token, created = Token.objects.get_or_create(key=key)
             # !!! if token is not created, update it's date to perform proper validation
             if not created:
                 token.created = timezone.now()

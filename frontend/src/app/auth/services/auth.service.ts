@@ -6,10 +6,9 @@ import {
   Observable, 
   Subscription, 
   catchError, 
-  finalize, 
+  finalize,
+  retry, 
   map, 
-  retry,
-  of,
 } from 'rxjs';
 import {
   IUser,
@@ -229,7 +228,7 @@ export class AuthService extends AbstractApiService {
    */
   checkTokenValidity(): void {
     if (this.emailBody) {
-      const subscription = this.post(this.api.pathTokenValidity, this.emailBody, { 
+      const subscription = this.post(this.api.pathTokenValidity, this.tokenBody, { 
         headers: AuthOnly.headers, 
         disableCatchError: true,
       })
@@ -263,6 +262,14 @@ export class AuthService extends AbstractApiService {
    */
   get emailBody(): { email: string } | null {
     const body = this.email ? { email: this.email } : null;
+    return body;
+  }
+
+  /**
+   * Simplified version of body, that contains only token or null.
+   */
+  get tokenBody(): { key: string } | null {
+    const body = this.token ? { key: this.token } : null;
     return body;
   }
 }

@@ -3,7 +3,6 @@ from django.core.exceptions import ValidationError
 
 from rest_framework import serializers
 
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
@@ -42,11 +41,12 @@ class UserMiniSerializer(serializers.ModelSerializer):
         fields = ('id', 'email', 'password', 'remember_me')
 
 
-class UserEmailSerializer(serializers.ModelSerializer):
+class UserEmailSerializer(serializers.Serializer):
     """
     Tiny Serializer for Logout/Delete-token purposes ONLY.
     """
     email = serializers.EmailField()
-    class Meta:
-        model = get_user_model()
-        fields = ['email']
+
+
+class AuthTokenSerializer(serializers.Serializer):
+    key = serializers.CharField(max_length=40)

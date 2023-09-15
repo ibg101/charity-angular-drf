@@ -34,7 +34,7 @@ export abstract class AbstractApiService {
   post<T>(relativePath: string, body: T | T[], { headers, assignError, disableCatchError }: ExtraParams = { }): Observable<T | T[] | HttpErrorResponse | void> {
     const absolutePath = this.craftUrl(undefined, relativePath); 
     return this.http.post<T | T[] | HttpErrorResponse | void>(absolutePath, body, this.setHeaders(headers)).pipe(
-      // () => of() is acting no-op operator's role
+      // identity is acting no-op operator's role
       disableCatchError ? identity : catchError(this.handleError(assignError)),
     );
   }

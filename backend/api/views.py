@@ -12,6 +12,7 @@ from .serializer import (
    UserSerializer, 
    UserMiniSerializer, 
    UserEmailSerializer,
+   AuthTokenSerializer,
 )
 from .helper_functions import get_id_or_email, define_token_expiry
 from .custom_permissions import IsOwnerOrAdmin
@@ -122,11 +123,9 @@ class CheckAuthToken(APIView):
    authentication_classes = [ExpiryTokenAuthentication]
 
    def post(self, request, *args, **kwargs):
-      serializer = UserEmailSerializer(data=request.data)
+      serializer = AuthTokenSerializer(data=request.data)
       if serializer.is_valid(raise_exception=True):
-         user = get_user_by_email(serializer=serializer)
-         if user is not None:
-            token = Queries().get_token(user_id=user.id)
-            if token is not None:
-               return Response({'token': token.key}, status=status.HTTP_200_OK)
+         token = Queries().get_token(key=serializer.validated_data['key'])
+         if token is not None:
+            return Response(status=status.HTTP_200_OK)
          return Response(status=status.HTTP_404_NOT_FOUND)
