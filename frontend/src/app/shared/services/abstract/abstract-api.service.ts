@@ -73,6 +73,10 @@ export abstract class AbstractApiService {
     }
   }
 
+  throwError(err: HttpErrorResponse): never {
+    throw new Error(err.message);
+  }
+
   setHeaders(headers?: HttpHeaders): IHeadersOrUndefined {
     return { headers: headers ? headers : undefined };
   }

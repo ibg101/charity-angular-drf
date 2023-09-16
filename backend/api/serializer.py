@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 
 from rest_framework import serializers
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
@@ -36,6 +37,22 @@ class UserMiniSerializer(serializers.ModelSerializer):
     # must override this field, since i use the same db model and email field is unique (while creating a new instance).
     # however this is not the case
     email = serializers.EmailField()
+
+    def validate(self, attrs):
+        email = attrs.get('email')
+        password = attrs.get('password')
+
+        try:
+            user = get_user_model().objects.filter(email=email).first() 
+        except get_user_model().DoesNotExist:
+            raise ValidationError('User with following email does not exist.')
+
+        if not user.check_password(password):
+            raise ValidationError('Invalid password. Please, try again.')
+        
+        attrs['user'] = user
+        return attrs
+
     class Meta:
         model = get_user_model()
         fields = ('id', 'email', 'password', 'remember_me')

@@ -56,13 +56,15 @@ export class ThemeService {
    * without refreshing the page.
    */
   doThemeCheck(): void {
-    const htmlElement = this.htmlElement;
+    const htmlElement = this.htmlElement; // improving performance by using const
+    const theme = this.theme;
+    const darkThemeApplied: boolean = htmlElement.classList.contains('tw-dark');
 
-    if (this.theme === 'light' && htmlElement.classList.contains('tw-dark')) {
-      htmlElement.classList.remove('tw-dark');
+    if (theme === 'light' && darkThemeApplied) {
+      htmlElement.classList.remove(this.darkThemeClass);
     }
-    else if (this.theme === 'dark' && !htmlElement.classList.contains('tw-dark')) {
-      htmlElement.classList.add('tw-dark');
+    else if (theme === 'dark' && !darkThemeApplied) {
+      htmlElement.classList.add(this.darkThemeClass);
     }
   }
 

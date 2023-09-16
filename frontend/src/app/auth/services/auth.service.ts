@@ -8,7 +8,7 @@ import {
   catchError, 
   finalize,
   retry, 
-  map, 
+  map,
 } from 'rxjs';
 import {
   IUser,
@@ -178,14 +178,15 @@ export class AuthService extends AbstractApiService {
       response.email ? this.cookie.set('email', response.email) : undefined;
     };
 
-    return (this.post<IUser>(relativePath, user, { headers }) as Observable<IUser>)
+    return (this.post<IUser>(relativePath, user, { headers, disableCatchError: true }) as Observable<IUser>)
       .pipe(
         // retrying 3 times in case of error
         retry(this.retryAttempts),
+        catchError((err: HttpErrorResponse) => this.throwError(err)),
         map(
           (response: IUser) => {
             setAuthStorage(response);
-            this.error ?? this.link.redirectHome(); 
+            this.link.redirectHome(); 
             return response;
           }
         )
@@ -207,13 +208,11 @@ export class AuthService extends AbstractApiService {
       this.storage.clear('email');
     };
 
-    return this.post(this.api.pathLogout, this.emailBody, { assignError: false })
+    return this.post(this.api.pathLogout, this.emailBody, { disableCatchError: true })
       .pipe(
         retry(this.retryAttempts),
         // since i disabled error caching in abstract class, providing it here
-        catchError((err: HttpErrorResponse): never => {
-          throw new Error(err.message);
-        }),
+        catchError((err: HttpErrorResponse) => this.throwError(err)),
         map(response => {
           clearAuthStorage();
           this.link.redirectHome();
@@ -236,7 +235,7 @@ export class AuthService extends AbstractApiService {
           retry(this.retryAttempts),
           catchError((err: HttpErrorResponse): never => {
             this.logoutUser();
-            throw new Error(err.message);
+            this.throwError(err);
           }),
           map(response => {
             this.isAuthenticated = true;

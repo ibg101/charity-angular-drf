@@ -26,6 +26,8 @@
         <h1 class="tw-text-sm tw-leading-6 tw-text-gray-700 dark:tw-text-gray-200">Remember me for 12 days</h1>
       </div>
 
+      <app-error [error]="auth.error"></app-error>
+
       <app-button
         [isDisabled]="signUpForm.invalid" 
         [isAuthButton]="true" 
