@@ -178,20 +178,23 @@ export class AuthService extends AbstractApiService {
       response.email ? this.cookie.set('email', response.email) : undefined;
     };
 
-    return (this.post<IUser>(relativePath, user, { headers, disableCatchError: true }) as Observable<IUser>)
+    return (this.post<IUser>(relativePath, user, { headers }) as Observable<IUser>)
       .pipe(
         // retrying 3 times in case of error
         retry(this.retryAttempts),
-        catchError((err: HttpErrorResponse) => this.throwError(err)),
         map(
           (response: IUser) => {
             setAuthStorage(response);
-            this.link.redirectHome(); 
             return response;
           }
-        )
+        ),
        )
-      .subscribe();
+      .subscribe({
+        complete: () => {
+          this.link.redirectHome();
+          this.cleanUpError();
+        }
+      });
   }
 
   registerUser(user: IUser): Subscription {
@@ -208,18 +211,16 @@ export class AuthService extends AbstractApiService {
       this.storage.clear('email');
     };
 
-    return this.post(this.api.pathLogout, this.emailBody, { disableCatchError: true })
+    return this.post(this.api.pathLogout, this.emailBody, { assignError: false })
       .pipe(
         retry(this.retryAttempts),
-        // since i disabled error caching in abstract class, providing it here
-        catchError((err: HttpErrorResponse) => this.throwError(err)),
-        map(response => {
+      )
+      .subscribe({
+        complete: () => {
           clearAuthStorage();
           this.link.redirectHome();
-          return response;
-        }),
-      )
-      .subscribe();
+        }
+      });
   }
 
   /**

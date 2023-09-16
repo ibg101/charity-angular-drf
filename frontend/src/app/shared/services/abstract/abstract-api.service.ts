@@ -90,4 +90,11 @@ export abstract class AbstractApiService {
   throwError(err: HttpErrorResponse): never {
     throw new Error(err.message);
   }
+
+  /**
+   * Cleans the Error object up, resetting it to null.
+   */
+  cleanUpError(): void {
+    this.error = null;
+  }
 }
