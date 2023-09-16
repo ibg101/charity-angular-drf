@@ -7,6 +7,6 @@ export { imgPath } from './constants';
 export { bgPath } from './constants';
 export { bgDarkPath } from './constants';
 export { bgLightPath } from './constants';
-// regex
+// regex:
 export { emailPattern } from './constants';
 export { passwordPattern } from './constants';

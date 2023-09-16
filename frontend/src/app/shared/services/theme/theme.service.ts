@@ -6,6 +6,8 @@ import { bgDarkPath, bgLightPath } from 'src/app/utilities/constants';
 })
 export class ThemeService {
   public systemTheme: string = '';
+  public darkThemeClass: string = 'tw-dark';
+  public htmlElement = document.documentElement as HTMLElement;
   public bgDarkPath: string = bgDarkPath;
   public bgLightPath: string = bgLightPath;
   
@@ -26,12 +28,13 @@ export class ThemeService {
 
   // cant be used as standalone function. ! use in pair with defineSystemTheme
   toggleClassTheme(): void {
-    const htmlElement = document.documentElement as HTMLElement;
+    const htmlElement = this.htmlElement;
+    
     if (this.theme === 'dark') {
-      htmlElement.classList.add('tw-dark');
+      htmlElement.classList.add(this.darkThemeClass);
     }
     else if (this.theme === 'light') {
-      htmlElement.classList.remove('tw-dark')
+      htmlElement.classList.remove(this.darkThemeClass);
     } 
   }
 
@@ -46,6 +49,21 @@ export class ThemeService {
 
   setFill(value: string): void {
     sessionStorage.setItem('fill', value);
+  }
+
+  /**
+   * Eliminates the bug, that occurs when user manually cleans the sessionStorage and navigates to a different component,
+   * without refreshing the page.
+   */
+  doThemeCheck(): void {
+    const htmlElement = this.htmlElement;
+
+    if (this.theme === 'light' && htmlElement.classList.contains('tw-dark')) {
+      htmlElement.classList.remove('tw-dark');
+    }
+    else if (this.theme === 'dark' && !htmlElement.classList.contains('tw-dark')) {
+      htmlElement.classList.add('tw-dark');
+    }
   }
 
   get theme(): string {

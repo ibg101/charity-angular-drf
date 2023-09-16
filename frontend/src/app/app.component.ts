@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { ThemeService } from './shared/services/theme/theme.service';
 import { AuthService } from './auth/services/auth.service';
 
@@ -7,7 +7,7 @@ import { AuthService } from './auth/services/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, DoCheck {
   title = 'westrong';
 
   constructor(
@@ -15,9 +15,13 @@ export class AppComponent implements OnInit {
     private auth: AuthService,
   ) { }
 
-  // toggling Dark mode, depending on system preferences
+  // providing necessary init processes
   ngOnInit(): void {
     this.theme.toggleTheme();
     this.auth.checkTokenValidity();
+  }
+
+  ngDoCheck(): void {
+    this.theme.doThemeCheck();
   }
 }
