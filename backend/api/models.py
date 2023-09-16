@@ -37,7 +37,11 @@ class CustomUser(AbstractUser):
         ),
         validators=[UnicodeUsernameValidator()],
     )
-    email = models.EmailField(blank=False, unique=True)
+    email = models.EmailField(
+        max_length=254,
+        blank=False, 
+        unique=True,
+    )
     confirm_password = models.CharField(max_length=128)
     remember_me = models.BooleanField(default=False, null=True)
 

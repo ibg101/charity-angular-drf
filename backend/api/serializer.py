@@ -36,7 +36,7 @@ class UserMiniSerializer(serializers.ModelSerializer):
     """
     # must override this field, since i use the same db model and email field is unique (while creating a new instance).
     # however this is not the case
-    email = serializers.EmailField()
+    email = serializers.EmailField(max_length=254)
 
     def validate(self, attrs):
         email = attrs.get('email')
@@ -62,7 +62,7 @@ class UserEmailSerializer(serializers.Serializer):
     """
     Tiny Serializer for Logout/Delete-token purposes ONLY.
     """
-    email = serializers.EmailField()
+    email = serializers.EmailField(max_length=254)
 
 
 class AuthTokenSerializer(serializers.Serializer):
