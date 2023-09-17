@@ -54,14 +54,3 @@ class UserMiniSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ('id', 'email', 'password', 'remember_me')
-
-
-class UserEmailSerializer(serializers.Serializer):
-    """
-    Tiny Serializer for Logout/Delete-token purposes ONLY.
-    """
-    email = serializers.EmailField(max_length=254)
-
-
-class AuthTokenSerializer(serializers.Serializer):
-    key = serializers.CharField(max_length=40)

@@ -7,14 +7,16 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from django.core.exceptions import ObjectDoesNotExist
 
-from .db_queries import Queries, get_user_by_email
-from .serializer import (
-   UserSerializer, 
+from .utils.db_queries import Queries, get_user_by_email
+from .serializers.model_serializers import (
+   UserSerializer,
    UserMiniSerializer, 
+)
+from .serializers.simple_serializers import (
    UserEmailSerializer,
    AuthTokenSerializer,
 )
-from .helper_functions import get_id_or_email, define_token_expiry
+from .utils.helper_functions import get_id_or_email, define_token_expiry
 from .custom_permissions import IsOwnerOrAdmin
 from .expiry_token_auth import ExpiryTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -26,7 +28,7 @@ class UsersApiView(APIView):
    authentication_classes = [ExpiryTokenAuthentication]
 
    def dispatch(self, request, *args, **kwargs):
-      define_token_expiry(request, UserSerializer)
+      define_token_expiry(request)
       return super().dispatch(request, *args, **kwargs)
 
    def get_permissions(self):
@@ -85,7 +87,7 @@ class UsersApiView(APIView):
 
 class LoginApiView(APIView):
    def dispatch(self, request, *args, **kwargs):
-      define_token_expiry(request, UserMiniSerializer)
+      define_token_expiry(request)
       return super().dispatch(request, *args, **kwargs)
 
    def post(self, request, *args, **kwargs):
@@ -93,6 +95,9 @@ class LoginApiView(APIView):
       if serializer.is_valid(raise_exception=True):
          user = get_user_by_email(serializer)
          if user is not None:
+            remember_me: bool = serializer.validated_data['remember_me']
+            user.remember_me = remember_me # sync values in db 
+            user.save()
             token = Queries().get_token(user_id=user.id)
             return Response({'token': token.key, 'email': user.email})
 

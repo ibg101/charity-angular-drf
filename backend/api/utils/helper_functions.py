@@ -1,7 +1,8 @@
 import json
 from typing import Union, Dict
 
-from .expiry_token_auth import ExpiryTokenAuthentication
+from ..expiry_token_auth import ExpiryTokenAuthentication
+from ..serializers.simple_serializers import RememberMeSerializer
 
 
 def get_id_or_email(data) -> Union[Dict[str, int | str], None]:
@@ -17,10 +18,21 @@ def get_id_or_email(data) -> Union[Dict[str, int | str], None]:
         return {'email': email}
     return None
 
-def define_token_expiry(request, serializer):
+def define_token_expiry(request, serializer=None):
+    """
+    Provide Serializer with Remember me field, if it doesn\'t contain complex validation logic.\n
+    Otherwise - keep it blank 
+    to provide validation via RememberMeSerializer. Recommended to keep Serializer argument None.
+    """
     if request.method == 'POST':
         parsed_body = json.loads(request.body)
-        serializer = serializer(data=parsed_body)
+        if not serializer:
+            # for better performance use this
+            remember_me = parsed_body['remember_me']
+            data = {'remember_me': remember_me}
+            serializer = RememberMeSerializer(data=data)
+        else:
+            serializer = serializer(data=parsed_body)
         # cant use raise_exception=True, since it produces a bug that prevents invoking exception_handler
         if serializer.is_valid():
             if serializer.validated_data['remember_me']:
