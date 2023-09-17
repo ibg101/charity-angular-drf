@@ -95,8 +95,6 @@ class LoginApiView(APIView):
          if user is not None:
             token = Queries().get_token(user_id=user.id)
             return Response({'token': token.key, 'email': user.email})
-         return Response(status=status.HTTP_404_NOT_FOUND)
-      
 
 class LogoutApiView(APIView):
    """

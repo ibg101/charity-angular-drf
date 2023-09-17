@@ -1,5 +1,4 @@
 import json
-
 from typing import Union, Dict
 
 from .expiry_token_auth import ExpiryTokenAuthentication
@@ -22,6 +21,7 @@ def define_token_expiry(request, serializer):
     if request.method == 'POST':
         parsed_body = json.loads(request.body)
         serializer = serializer(data=parsed_body)
-        if serializer.is_valid(raise_exception=True):
+        # cant use raise_exception=True, since it produces a bug that prevents invoking exception_handler
+        if serializer.is_valid():
             if serializer.validated_data['remember_me']:
                 ExpiryTokenAuthentication.expiry_date = 12

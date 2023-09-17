@@ -1,8 +1,6 @@
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
 
 from rest_framework import serializers
-
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
         confirm_password = self.initial_data['confirm_password']
         if password == confirm_password:
             return super().validate(attrs) 
-        return ValidationError('Two password fields don\'t match.')
+        return serializers.ValidationError({'confirm_password': 'Two password fields don\'t match.'})
 
     def create(self, validated_data):
         user = get_user_model().objects.create_user(**validated_data)
@@ -45,10 +43,10 @@ class UserMiniSerializer(serializers.ModelSerializer):
         try:
             user = get_user_model().objects.filter(email=email).first() 
         except get_user_model().DoesNotExist:
-            raise ValidationError('User with following email does not exist.')
+            raise serializers.ValidationError({'email': 'User with following email does not exist.'})
 
         if not user.check_password(password):
-            raise ValidationError('Invalid password. Please, try again.')
+            raise serializers.ValidationError({'password': 'Invalid password. Please, try again.'})
         
         attrs['user'] = user
         return attrs
