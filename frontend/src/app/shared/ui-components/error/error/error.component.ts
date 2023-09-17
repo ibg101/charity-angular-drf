@@ -7,5 +7,10 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./error.component.scss']
 })
 export class ErrorComponent {
-  @Input() public error: HttpErrorResponse | null = null; 
+  @Input() public error: HttpErrorResponse | null = null;
+  
+  get errorMsg(): string | null {
+    const err = this.error;
+    return err ? err.error.detail : null; 
+  }
 }

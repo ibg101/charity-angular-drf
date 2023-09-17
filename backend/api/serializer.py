@@ -43,10 +43,10 @@ class UserMiniSerializer(serializers.ModelSerializer):
         try:
             user = get_user_model().objects.filter(email=email).first() 
         except get_user_model().DoesNotExist:
-            raise serializers.ValidationError({'email': 'User with following email does not exist.'})
+            raise serializers.ValidationError({'email': 'User with following email does not exist.'}, code=404)
 
         if not user.check_password(password):
-            raise serializers.ValidationError({'password': 'Invalid password. Please, try again.'})
+            raise serializers.ValidationError({'password': 'Invalid password. Please, try again.'}, code=401)
         
         attrs['user'] = user
         return attrs
