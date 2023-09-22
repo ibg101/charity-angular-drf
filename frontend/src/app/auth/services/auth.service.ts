@@ -67,7 +67,6 @@ export class AuthService extends AbstractApiService {
     confirmPassword$: this.authForm.confirmPasswordControl.valueChanges,
     rememberMe$: this.authForm.rememberMeControl.valueChanges,
   }
-  public isAuthenticated: boolean = false;
   
   constructor(
     http: HttpClient,
@@ -239,11 +238,7 @@ export class AuthService extends AbstractApiService {
           }),
           finalize(() => { subscription.unsubscribe() })
         )
-        .subscribe({
-          complete: () => {
-            this.isAuthenticated = true;
-          }
-        });
+        .subscribe();
     }
     return;
   }
@@ -254,6 +249,10 @@ export class AuthService extends AbstractApiService {
 
   get email(): string | undefined {
     return this.storage.getItem('email');
+  }
+
+  get isAuthenticated(): boolean {
+    return this.token ? true : false;
   }
 
   /**
