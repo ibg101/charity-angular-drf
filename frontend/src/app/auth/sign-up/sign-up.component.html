@@ -31,13 +31,13 @@
       <app-button
         [isDisabled]="signUpForm.invalid" 
         [isAuthButton]="true" 
-        [routerLink]="link.auth['signUp']"
+        [routerLink]="link.auth.signUp"
         (click)="signUp()"
       >Sign Up</app-button>
 
       <div class="tw-flex tw-justify-center tw-items-center tw-text-sm">
         <h1 class="tw-text-gray-500">Already have an account?&nbsp;</h1>
-        <app-router-link [applyHover]="false" [routerLink]="link.auth['signIn']" 
+        <app-router-link [applyHover]="false" [routerLink]="link.auth.signIn" 
           class="
             tw-font-medium tw-leading-6
           tw-text-indigo-600 hover:tw-text-indigo-500

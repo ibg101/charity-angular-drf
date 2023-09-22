@@ -16,6 +16,6 @@ export function isAuthenticatedGuard(): CanActivateFn {
     const router = inject(Router);
     const link = inject(LinksService);
 
-    return auth.isAuthenticated ? true : router.parseUrl(link.auth['signIn']);
+    return auth.isAuthenticated ? true : router.parseUrl(link.auth.signIn);
   }
 }

@@ -20,7 +20,7 @@
         <div class="tw-flex tw-justify-between">
           <h1>Password</h1>
           <!-- resetting password feature will be added -->
-          <app-router-link [applyHover]="false" [routerLink]="link.auth['passwordReset']" 
+          <app-router-link [applyHover]="false" [routerLink]="link.auth.passwordReset" 
           class="
           tw-text-indigo-600 hover:tw-text-indigo-500
           dark:tw-text-indigo-400 dark:hover:tw-text-indigo-300
@@ -39,13 +39,13 @@
       <app-button
         [isDisabled]="signInForm.invalid" 
         [isAuthButton]="true" 
-        [routerLink]="link.auth['signIn']"
+        [routerLink]="link.auth.signIn"
         (click)="signIn()"
       >Sign In</app-button>
 
       <div class="tw-flex tw-justify-center tw-items-center tw-text-sm">
         <h1 class="tw-text-gray-500">Dont have any account yet?&nbsp;</h1>
-        <app-router-link [applyHover]="false" [routerLink]="link.auth['signUp']" 
+        <app-router-link [applyHover]="false" [routerLink]="link.auth.signUp" 
           class="
             tw-font-medium tw-leading-6
           tw-text-indigo-600 hover:tw-text-indigo-500

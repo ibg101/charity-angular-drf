@@ -3,14 +3,14 @@
 
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ILink } from 'src/app/custom-types';
+import { IAuthLink } from 'src/app/custom-types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LinksService {
   // nested paths
-  public auth: ILink = {
+  public auth: IAuthLink = {
     signIn: '/auth/sign-in',
     signUp: '/auth/sign-up',
     passwordReset: '/auth/password-reset',
