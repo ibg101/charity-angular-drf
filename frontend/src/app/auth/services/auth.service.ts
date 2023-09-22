@@ -251,6 +251,9 @@ export class AuthService extends AbstractApiService {
     return this.storage.getItem('email');
   }
 
+  /**
+   * Defines whether User is authenticated or not by accessing it's token from Client's Storage.
+   */
   get isAuthenticated(): boolean {
     return this.token ? true : false;
   }
