@@ -10,7 +10,10 @@ def handler(exc, context):
     for details_raw in exc.detail.values():
       detail_raw: ErrorDetail = details_raw[0]
       detail = detail_raw.title()
-      status_code = detail_raw.code
+      if detail_raw.code != 'unique':
+        status_code = detail_raw.code
+      else:
+        status_code = 409 # if unique, then explicitly raise 409
 
     error_response = {
       'detail': detail,

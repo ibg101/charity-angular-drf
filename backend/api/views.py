@@ -10,7 +10,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from .utils.db_queries import Queries, get_user_by_email
 from .serializers.model_serializers import (
    UserSerializer,
-   UserMiniSerializer, 
+   LoginUserSerializer,
+   CreateUserSerializer, 
 )
 from .serializers.simple_serializers import (
    UserEmailSerializer,
@@ -48,14 +49,14 @@ class UsersApiView(APIView):
       return Response(data=serializer.data, status=status.HTTP_200_OK)
     
    def post(self, request: Request, *args, **kwargs) -> Response:
-      serializer = UserSerializer(data=request.data)
-      if serializer.is_valid():
+      serializer = CreateUserSerializer(data=request.data)
+      if serializer.is_valid(raise_exception=True):
          serializer.save()
          # accessing id by currently created instance, whose data were validated, to ensure there're no vulns 
          user_id = serializer.instance.id
          email = serializer.validated_data['email']
          token = Queries().get_token(user_id)
-         data = serializer.data
+         data = serializer.validated_data
          data.update({
             'token': token.key,
             'email': email,
@@ -70,7 +71,7 @@ class UsersApiView(APIView):
          serializer = UserSerializer(instance=user, data=request.data)
          if serializer.is_valid():
             serializer.save()
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
+            return Response(data=serializer.validated_data, status=status.HTTP_200_OK)
          return Response(status=status.HTTP_400_BAD_REQUEST)
       else:
          return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -91,7 +92,7 @@ class LoginApiView(APIView):
       return super().dispatch(request, *args, **kwargs)
 
    def post(self, request, *args, **kwargs):
-      serializer = UserMiniSerializer(data=request.data)
+      serializer = LoginUserSerializer(data=request.data)
       if serializer.is_valid(raise_exception=True):
          user = get_user_by_email(serializer)
          if user is not None:
