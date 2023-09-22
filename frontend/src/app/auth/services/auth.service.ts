@@ -192,7 +192,6 @@ export class AuthService extends AbstractApiService {
       .subscribe({
         complete: () => {
           this.link.redirectHome();
-          this.cleanUpError();
         }
       });
   }
@@ -238,13 +237,13 @@ export class AuthService extends AbstractApiService {
             this.logoutUser();
             this.throwError(err);
           }),
-          map(response => {
-            this.isAuthenticated = true;
-            return response;
-          }),
           finalize(() => { subscription.unsubscribe() })
         )
-        .subscribe();
+        .subscribe({
+          complete: () => {
+            this.isAuthenticated = true;
+          }
+        });
     }
     return;
   }

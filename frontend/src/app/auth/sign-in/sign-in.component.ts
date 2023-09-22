@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { LinksService } from 'src/app/shared/services/links/links.service';
 import { AuthService } from '../services/auth.service';
@@ -9,7 +9,7 @@ import { ISignInForm, IUser } from 'src/app/custom-types';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
-export class SignInComponent implements OnInit {
+export class SignInComponent implements OnInit, OnDestroy {
   public signInForm: FormGroup<ISignInForm> = new FormGroup<ISignInForm>({
     email: this.auth.authForm.emailControl,
     password: this.auth.authForm.passwordControl,
@@ -29,6 +29,10 @@ export class SignInComponent implements OnInit {
 
   ngOnInit(): void {
     this.auth.initInstance(this.signInForm, this.user, { isSignIn: true });
+  }
+
+  ngOnDestroy(): void {
+    this.auth.cleanUpError();
   }
 
   signIn(): void {
