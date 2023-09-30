@@ -1,6 +1,13 @@
-<ng-container>
-  <app-navbar></app-navbar>
+<div class="tw-h-screen tw-w-screen">  
   <app-fancy-bg></app-fancy-bg>
-  <!-- rendering dynamically page based on it's path. -->
-  <router-outlet></router-outlet>
-</ng-container>
+  <app-navbar></app-navbar>
+
+  <div class="
+    tw-h-[calc(100%-4.05rem)] sm:tw-h-[calc(100%-4.55rem)] tw-w-full
+    md-h:tw-pt-6 tw-pt-14 sm:tw-pt-16 md:tw-pt-20 lg:tw-pt-24
+    tw-px-6 sm:tw-px-0
+  ">
+    <!-- rendering dynamically page based on it's path. -->
+    <router-outlet></router-outlet>
+  </div>
+</div>
