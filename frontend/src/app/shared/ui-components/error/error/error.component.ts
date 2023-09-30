@@ -11,6 +11,10 @@ export class ErrorComponent {
   
   get errorMsg(): string | null {
     const err = this.error;
+    // additional catch statements based on status code
+    if (err?.status === 0) {
+      return 'Connection Error happened. Please, try again.'
+    }
     return err ? err.error.detail : null; 
   }
 }

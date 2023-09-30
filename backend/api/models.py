@@ -28,6 +28,10 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
+    # constants 
+    max_decimal = 6
+    max_digits = 9
+    
     objects = CustomUserManager()
     username = models.CharField(
         unique=False,
@@ -43,6 +47,18 @@ class CustomUser(AbstractUser):
         unique=True,
     )
     remember_me = models.BooleanField(default=False, null=True)
+    donated = models.DecimalField(
+        default=0,
+        blank=True,
+        decimal_places=max_decimal,
+        max_digits=max_digits,
+    )
+    collected = models.DecimalField(
+        default=0,
+        blank=True,
+        decimal_places=max_decimal,
+        max_digits=max_digits,
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

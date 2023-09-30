@@ -1,4 +1,6 @@
 import json
+from json.decoder import JSONDecodeError
+from urllib.parse import parse_qs
 from typing import Union, Dict
 
 from ..expiry_token_auth import ExpiryTokenAuthentication
@@ -25,15 +27,24 @@ def define_token_expiry(request, serializer=None):
     to provide validation via RememberMeSerializer. Recommended to keep Serializer argument None.
     """
     if request.method == 'POST':
-        parsed_body = json.loads(request.body)
-        if not serializer:
-            # for better performance use this
-            remember_me = parsed_body['remember_me']
-            data = {'remember_me': remember_me}
-            serializer = RememberMeSerializer(data=data)
-        else:
-            serializer = serializer(data=parsed_body)
-        # cant use raise_exception=True, since it produces a bug that prevents invoking exception_handler
-        if serializer.is_valid():
-            if serializer.validated_data['remember_me']:
-                ExpiryTokenAuthentication.expiry_date = 12
+        try:
+            parsed_body = json.loads(request.body)
+        except JSONDecodeError as err:
+            raw_data: bytes = request.body
+            decoded_data = raw_data.decode('utf-8')
+            parsed_body = parse_qs(decoded_data)    
+
+        try:
+            if not serializer:
+                # for better performance use this
+                remember_me = parsed_body['remember_me']
+                data = {'remember_me': remember_me}
+                serializer = RememberMeSerializer(data=data)
+            else:
+                serializer = serializer(data=parsed_body)
+            # cant use raise_exception=True, since it produces a bug that prevents invoking exception_handler
+            if serializer.is_valid():
+                if serializer.validated_data['remember_me']:
+                    ExpiryTokenAuthentication.expiry_date = 12
+        except KeyError as err:
+            pass
