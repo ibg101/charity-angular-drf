@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable, catchError, of, identity } from "rxjs";
 import { IEnvironment, ExtraParams } from "src/app/custom-types";
 
@@ -12,9 +12,11 @@ export abstract class AbstractApiService {
 
   constructor(protected http: HttpClient, protected env: IEnvironment) {}
 
-  get<T>(id: number, relativePath: string, headers?: HttpHeaders): Observable<T> | never {
-    const absolutePath = this.craftUrl(id, relativePath); 
-    return this.http.get<T>(absolutePath, { headers }).pipe(
+  get<T>(relativePath: string, { id, headers, httpParam, httpParamValue }: ExtraParams = { }): Observable<T> | never {
+    const absolutePath = this.craftUrl(id, relativePath);
+    const params = id ? undefined : new HttpParams().set(httpParam as string, httpParamValue as string);
+    console.log(params) 
+    return this.http.get<T>(absolutePath, { headers, params }).pipe(
       catchError(this.handleStrictError()),
     );
   }
@@ -39,7 +41,7 @@ export abstract class AbstractApiService {
     );
   }
 
-  put<T>(id: number, relativePath: string, body: T, headers?: HttpHeaders): Observable<T> | never {
+  put<T>(relativePath: string, body: T, { id, headers }: ExtraParams = { }): Observable<T> | never {
     const absolutePath = this.craftUrl(id, relativePath);
     return this.http.put<T>(absolutePath, body, { headers }).pipe(
       catchError(this.handleStrictError()),

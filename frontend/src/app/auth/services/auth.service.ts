@@ -19,7 +19,7 @@ import {
   IEnvironment,
   FormOption,
 } from 'src/app/custom-types';
-import { AuthOnly, NoTokenRequired } from 'src/app/shared/http/headers';
+import { AuthOnly, NoTokenRequired, TokenRequired } from 'src/app/shared/http/headers';
 import { AbstractApiService } from 'src/app/shared/services/abstract/abstract-api.service';
 import { ApiEndpointService } from 'src/app/shared/services/api/api-endpoint.service';
 import { LinksService } from 'src/app/shared/services/links/links.service';
@@ -154,12 +154,13 @@ export class AuthService extends AbstractApiService {
     }
   }
 
-  getUser(user_id: number): Observable<IUser | HttpErrorResponse> {
-    return this.get(user_id, this.api.pathUsers);
+  getUser(): Subscription {
+    const headers = TokenRequired.headers;
+    return this.get(this.api.pathUsers, { headers, httpParam: 'email', httpParamValue: this.email }).subscribe();
   }
 
-  getAllUsers(): Observable<IUser | IUser[] | HttpErrorResponse> {
-    return this.getAll(this.api.pathUsers);
+  getAllUsers(): Subscription {
+    return this.getAll(this.api.pathUsers).subscribe();
   }
 
   /**

@@ -6,7 +6,7 @@ import {
 } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { deleteHeader } from "src/app/utilities/http/delete-header";
-import { AuthOnly, NoTokenRequired } from "../headers";
+import { AuthOnly, NoTokenRequired, TokenRequired } from "../headers";
 import { Injectable } from "@angular/core";
 
 
@@ -16,7 +16,7 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class CleanerInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const modifiedReq = deleteHeader(req, [AuthOnly.key, NoTokenRequired.key]);
+    const modifiedReq = deleteHeader(req, [AuthOnly.key, TokenRequired.key, NoTokenRequired.key]);
     return next.handle(modifiedReq);
   }
 }

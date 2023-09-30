@@ -39,7 +39,7 @@ class UsersApiView(APIView):
       return permissions
 
    def get(self, request: Request, *args, **kwargs) -> Response:
-      field = get_id_or_email(request.data)
+      field = get_id_or_email(request.query_params)
       if field:
          user = Queries().get_user_by_field(field=field)
          serializer = UserSerializer(instance=user)
