@@ -10,7 +10,11 @@ module.exports = {
         'secondary': '#D65DB1',
       },
       screens: {
-        'md-h': {'raw': '(max-height: 768px)'}
+        'xs-max-h': {'raw': '(max-height: 639px)'},
+        'xs-h': {'raw': '(min-height: 640px)'},
+        '2xs-h': {'raw': '(min-height: 667px)'},
+        'sm-h': {'raw': '(min-height: 740px)'},
+        'md-h': {'raw': '(min-height: 780px)'},
       },
     },
   },
