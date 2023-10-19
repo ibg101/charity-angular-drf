@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 
+/**
+ * Manages all available API endpoint URL's.
+ */
 @Injectable({
   providedIn: 'root'
 })

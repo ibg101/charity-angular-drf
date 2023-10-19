@@ -19,7 +19,7 @@ import {
   IEnvironment,
   FormOption,
 } from 'src/app/custom-types';
-import { AuthOnly, NoTokenRequired, TokenRequired } from 'src/app/shared/http/headers';
+import { AuthOnly, NoTokenRequired } from 'src/app/shared/http/headers';
 import { AbstractApiService } from 'src/app/shared/services/abstract/abstract-api.service';
 import { ApiEndpointService } from 'src/app/shared/services/api/api-endpoint.service';
 import { LinksService } from 'src/app/shared/services/links/links.service';
@@ -29,8 +29,8 @@ import {
   ENVIRONMENT, 
   invalidFormOption,
 } from 'src/app/utilities/constants';
-import { StorageService } from './storage.service';
 import { NavbarService } from 'src/app/navbar/services/navbar.service';
+import { UserService } from 'src/app/shared/services/user/user.service';
 
 
 @Injectable({
@@ -73,7 +73,7 @@ export class AuthService extends AbstractApiService {
     http: HttpClient,
     @Inject(ENVIRONMENT) env: IEnvironment,
     private cookie: CookieService,
-    private storage: StorageService,
+    private user: UserService,
     private link: LinksService,
     private api: ApiEndpointService,
     private nav: NavbarService,
@@ -156,15 +156,6 @@ export class AuthService extends AbstractApiService {
     }
   }
 
-  getUser(): Subscription {
-    const headers = TokenRequired.headers;
-    return this.get(this.api.pathUsers, { headers, httpParam: 'email', httpParamValue: this.email }).subscribe();
-  }
-
-  getAllUsers(): Subscription {
-    return this.getAll(this.api.pathUsers).subscribe();
-  }
-
   /**
    * Can be specified addtional HttpHeaders key-value pair. 
    * 
@@ -208,8 +199,7 @@ export class AuthService extends AbstractApiService {
 
   logoutUser(): Subscription {
     const cleanUp = (): void => {
-      this.storage.clear('token');
-      this.storage.clear('email');
+      this.user.clearUserStorage();
       this.nav.activeBurger = false;
       this.link.redirectHome();
     } 
@@ -247,26 +237,19 @@ export class AuthService extends AbstractApiService {
     return;
   }
 
-  get token(): string | undefined {
-    return this.storage.getItem('token');
-  }
-
-  get email(): string | undefined {
-    return this.storage.getItem('email');
-  }
-
   /**
    * Defines whether User is authenticated or not by accessing it's token from Client's Storage.
    */
   get isAuthenticated(): boolean {
-    return this.token ? true : false;
+    return this.user.token ? true : false;
   }
 
   /**
    * Simplified version of user body, that contains only email field or null.
    */
   get emailBody(): { email: string } | null {
-    const body = this.email ? { email: this.email } : null;
+    const email: string | undefined = this.user.email;
+    const body = email ? { email: email } : null;
     return body;
   }
 
@@ -274,7 +257,8 @@ export class AuthService extends AbstractApiService {
    * Simplified version of body, that contains only token or null.
    */
   get tokenBody(): { key: string } | null {
-    const body = this.token ? { key: this.token } : null;
+    const token: string | undefined = this.user.token;
+    const body = token ? { key: token } : null;
     return body;
   }
 }

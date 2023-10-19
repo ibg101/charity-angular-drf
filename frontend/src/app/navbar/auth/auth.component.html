@@ -1,5 +1,5 @@
 <li>
-  <ng-container *ngIf="auth.email; then isAuth; else signIn"></ng-container>
+  <ng-container *ngIf="user.email; then isAuth; else signIn"></ng-container>
 </li>
 
 <!-- templates -->
@@ -8,7 +8,7 @@
     tw-flex tw-flex-col md:tw-flex-row 
     tw-gap-y-1.5 tw-gap-x-6 tw-items-center
   ">
-    <app-router-link routerLink="profile">{{ auth.email }}</app-router-link>
+    <app-router-link routerLink="profile">{{ user.email }}</app-router-link>
     <div class="
       tw-flex tw-flex-row tw-items-center tw-gap-x-3
       tw-cursor-pointer 
