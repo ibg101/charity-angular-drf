@@ -16,7 +16,7 @@
   tw-absolute tw-right-0 tw-flex tw-flex-col tw-gap-y-1.5
   tw-text-slate-700 dark:tw-text-slate-200
   "
-  [ngClass]="{'tw-border-b tw-border-x tw-border-slate-900/10 dark:tw-border-slate-50/5 tw-bg-slate-50 dark:tw-bg-[#0B1120]': nav.activeBurger && nav.innerWidth < 768}"
+  [ngClass]="{'tw-border-b tw-border-x tw-border-slate-900/10 dark:tw-border-slate-50/5 tw-bg-slate-50 dark:tw-bg-[#0B1120] tw-bg-opacity-[0.9] dark:tw-bg-opacity-[0.9] tw-z-50': nav.activeBurger && nav.innerWidth < 768}"
   >
     <ng-container *ngIf="nav.activeBurger">
       <nav-ul-list className="tw-flex tw-flex-col tw-gap-y-1.5 md:tw-hidden"></nav-ul-list>

@@ -10,11 +10,11 @@
   ">
     <app-router-link routerLink="profile">{{ auth.email }}</app-router-link>
     <div class="
-      tw-flex tw-flex-row tw-items-center tw-gap-x-2
+      tw-flex tw-flex-row tw-items-center tw-gap-x-3
       tw-cursor-pointer 
       tw-group hover:tw-text-sky-500 dark:hover:tw-text-sky-400
     " (click)="auth.logoutUser()">
-      <span *ngIf="nav.innerWidth <= 768">Logout</span>
+      <span class="md:tw-hidden">Logout</span>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
         class="
           tw-h-5 

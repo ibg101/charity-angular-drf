@@ -4,9 +4,14 @@
     <nav-ul-list className="tw-hidden md:tw-static md:tw-flex md:tw-space-x-8"></nav-ul-list>
   </ng-container>
 
-  <button (click)="toggleManuallyTheme()" class="md:tw-border-l md:tw-pl-6 tw-border-slate-200 dark:tw-border-slate-800">
-    <ng-container *ngTemplateOutlet="modes"></ng-container>
-  </button>
+  <div class="
+    md:tw-border-l md:tw-pl-6 tw-border-slate-200 dark:tw-border-slate-800
+    tw-flex tw-items-center
+  ">
+    <button (click)="toggleManuallyTheme()">
+      <ng-container *ngTemplateOutlet="modes"></ng-container>
+    </button>
+  </div>
 
   <nav-auth class="tw-hidden md:tw-flex"></nav-auth>
 
