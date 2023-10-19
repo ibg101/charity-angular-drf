@@ -3,7 +3,7 @@
 
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { IAuthLink } from 'src/app/custom-types';
+import { IAuthLink, IProfileLink } from 'src/app/custom-types';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,10 @@ export class LinksService {
     signIn: '/auth/sign-in',
     signUp: '/auth/sign-up',
     passwordReset: '/auth/password-reset',
+  }
+  public profile: IProfileLink = {
+    profile: '/profile',
+    edit: '/profile/edit',
   }
   // simple paths
   public home: string = '/';

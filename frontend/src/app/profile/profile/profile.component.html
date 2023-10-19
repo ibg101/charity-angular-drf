@@ -1,3 +1,50 @@
-<div>
-  <p>Total donated: {{ donation | currency }}</p>
+<div class="tw-grid tw-grid-cols-5">
+  <div class="tw-col-start-2 tw-flex tw-flex-col tw-gap-y-2">
+    <span class="tw-text-3xl tw-font-extrabold tw-tracking-tight tw-text-slate-900 dark:tw-text-white sm:tw-text-4xl">Your Profile</span>
+    <!-- user info + stats -->
+    <div class="tw-flex tw-flex-col tw-pt-4 tw-gap-y-4">
+      <!-- user info -->
+      <div class="
+        tw-flex tw-flex-col
+        tw-leading-7 tw-text-slate-700 dark:tw-text-slate-200
+      ">
+        <span class="tw-text-xl tw-font-medium">Credentials</span>
+        <hr class="tw-border-slate-200 dark:tw-border-slate-800">
+        <span class="tw-text-base">Username: &nbsp;{{ user.instance.username }}</span>
+        <span class="tw-text-base">Email: &nbsp;{{ user.instance.email }}</span>
+      </div>
+      <!-- stats -->
+      <div class="
+        tw-flex tw-flex-col
+        tw-leading-7 tw-text-slate-700 dark:tw-text-slate-200
+      ">
+        <span class="tw-text-lg sm:tw-text-xl tw-font-medium">Charity impact</span>
+        <hr class="tw-border-slate-200 dark:tw-border-slate-800">
+        <span class="tw-text-base">Total Donated: &nbsp;{{ user.instance.donated | currency }}</span>
+        <span class="tw-text-base">Collected: &nbsp;{{ user.instance.collected | currency }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="
+    tw-col-start-4
+    tw-flex tw-flex-row 
+    tw-justify-end tw-gap-x-2
+  ">
+    <div class="tw-flex tw-flex-row">
+      <span class="tw-font-extrabold tw-text-slate-900 dark:tw-text-white tw-text-lg sm:tw-text-xl">Edit</span>
+      <app-router-link [routerLink]="link.profile.edit">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="
+        tw-h-4 tw-w-4
+      tw-fill-slate-700 hover:tw-fill-sky-500
+      dark:tw-fill-slate-200 dark:hover:tw-fill-sky-400
+        ">
+          <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+          <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/>
+        </svg>
+      </app-router-link>
+    </div>
+  </div>
 </div>
+
+<router-outlet></router-outlet>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/auth/services/auth.service';
+import { LinksService } from 'src/app/shared/services/links/links.service';
 import { UserService } from 'src/app/shared/services/user/user.service';
 
 @Component({
@@ -8,9 +8,10 @@ import { UserService } from 'src/app/shared/services/user/user.service';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  public donation: number = 0;
-  
-  constructor(private user: UserService) { }
+  constructor(
+    public user: UserService,
+    public link: LinksService,
+  ) { }
 
   ngOnInit(): void {
     this.user.getUser();

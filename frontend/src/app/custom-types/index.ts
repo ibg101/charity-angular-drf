@@ -1,6 +1,7 @@
 // interfaces
 export { IEnvironment } from './interfaces/environment.interface';
-export { IAuthLink } from './interfaces/auth/links.interface';
+export { IAuthLink } from './interfaces/links/auth.interface';
+export { IProfileLink } from './interfaces/links/profile.interface';
 export { IUser } from './interfaces/auth/user.interface';
 export { IUser$ } from './interfaces/auth/user-stream.interface';
 export { IAuthForm } from './interfaces/auth/auth-form.interface';
