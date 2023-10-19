@@ -30,6 +30,7 @@ import {
   invalidFormOption,
 } from 'src/app/utilities/constants';
 import { StorageService } from './storage.service';
+import { NavbarService } from 'src/app/navbar/services/navbar.service';
 
 
 @Injectable({
@@ -75,6 +76,7 @@ export class AuthService extends AbstractApiService {
     private storage: StorageService,
     private link: LinksService,
     private api: ApiEndpointService,
+    private nav: NavbarService,
   ) {
     super(http, env)
   }
@@ -205,10 +207,12 @@ export class AuthService extends AbstractApiService {
   }
 
   logoutUser(): Subscription {
-    const clearAuthStorage = (): void => {
+    const cleanUp = (): void => {
       this.storage.clear('token');
       this.storage.clear('email');
-    };
+      this.nav.activeBurger = false;
+      this.link.redirectHome();
+    } 
 
     return this.post(this.api.pathLogout, this.emailBody, { assignError: false })
       .pipe(
@@ -216,8 +220,7 @@ export class AuthService extends AbstractApiService {
       )
       .subscribe({
         complete: () => {
-          clearAuthStorage();
-          this.link.redirectHome();
+          cleanUp();
         }
       });
   }
