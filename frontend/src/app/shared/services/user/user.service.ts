@@ -22,6 +22,11 @@ export class UserService extends AbstractApiService {
     id: 0,
     email: '',
     username: '',
+    documents: [{
+      name: '',
+      size: 0,
+      content: null,
+    }],
     donated: 0,
     collected: 0,
   };

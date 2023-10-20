@@ -3,6 +3,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .twc-text-medium {
+    @apply tw-font-medium tw-text-gray-800 dark:tw-text-gray-100;
+  }
+  .twc-text-bold {
+    @apply tw-font-bold tw-tracking-tight tw-text-gray-900 dark:tw-text-gray-50;
+  }
+}
+
 ul, li {
   list-style: none;
 }

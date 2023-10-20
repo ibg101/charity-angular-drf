@@ -6,6 +6,11 @@ export interface IUser {
   username?: string,
   confirmPassword?: string,
   token?: string,
+  documents?: [{
+    name: string,
+    size: number,
+    content: Blob | null,
+  }],
   donated?: number,
   collected?: number,
 }
