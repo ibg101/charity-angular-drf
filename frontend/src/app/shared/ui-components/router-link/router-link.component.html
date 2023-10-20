@@ -1,7 +1,10 @@
 <!-- by default it applies hover and highlighted when route is active -->
 <a [routerLinkActiveOptions]="{exact: true}" 
   routerLinkActive="{{ linkActive }}" 
-  [ngClass]="{'hover:tw-text-sky-500 dark:hover:tw-text-sky-400': applyHover}"
+  [ngClass]="{
+    'tw-group': applyGroup,
+    'hover:tw-text-sky-500 dark:hover:tw-text-sky-400': applyHover,
+  }"
   class="tw-cursor-pointer"
 >
   <ng-content></ng-content>
