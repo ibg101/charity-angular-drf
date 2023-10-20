@@ -6,7 +6,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { RouterLinkComponent } from './router-link/router-link.component';
 import { UiLineComponent } from './ui-line/ui-line.component';
-import { ErrorComponent } from './error/error/error.component';
+import { ErrorComponent } from './error/error.component';
+import { ModalComponent } from './modal/components/modal.component';
 
 
 
@@ -17,6 +18,7 @@ import { ErrorComponent } from './error/error/error.component';
     RouterLinkComponent,
     ErrorComponent,
     UiLineComponent,
+    ModalComponent,
   ],
   imports: [
     CommonModule,
@@ -29,6 +31,7 @@ import { ErrorComponent } from './error/error/error.component';
     RouterLinkComponent,
     ErrorComponent,
     UiLineComponent,
+    ModalComponent,
   ]
 })
 export class UiComponentsModule { }

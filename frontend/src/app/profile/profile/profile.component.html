@@ -57,8 +57,12 @@
       </div>
     </div>
 
-    <app-button class="tw-py-4">Delete Account</app-button>
+    <app-button class="tw-py-4" (click)="modal.toggleModal()">Delete Account</app-button>
   </div>
 </div>
+
+<ng-template [ngIf]="modal.isActiveModal">
+  <app-modal (clickEvent)="deleteAccount()"></app-modal>
+</ng-template>
 
 <router-outlet></router-outlet>
