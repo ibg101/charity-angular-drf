@@ -62,7 +62,10 @@
 </div>
 
 <ng-template [ngIf]="modal.isActiveModal">
-  <app-modal (clickEvent)="deleteAccount()"></app-modal>
+  <app-modal (submitEvent)="deleteAccount()">
+    <span modal-title>Delete Account</span>
+    <span modal-description>Are you sure you want to delete your account? All of your data will be permanently removed. This action cannot be undone.</span>
+  </app-modal>
 </ng-template>
 
 <router-outlet></router-outlet>

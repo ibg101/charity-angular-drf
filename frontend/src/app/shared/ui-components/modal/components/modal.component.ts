@@ -7,14 +7,14 @@ import { ModalService } from '../serivces/modal.service';
   styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent {
-  @Output() clickEvent: EventEmitter<void> = new EventEmitter<void>(); 
+  @Output() submitEvent: EventEmitter<void> = new EventEmitter<void>(); 
 
   constructor(
     public modal: ModalService,
   ) { }
 
   actionOnClick() {
-    this.clickEvent.emit();
+    this.submitEvent.emit();
     this.modal.toggleModal();
   }
 }
