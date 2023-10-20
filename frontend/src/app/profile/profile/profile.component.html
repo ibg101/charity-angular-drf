@@ -45,7 +45,19 @@
         <span class="tw-text-base">Total Donated: &nbsp;{{ user.instance.donated | currency }}</span>
         <span class="tw-text-base">Collected: &nbsp;{{ user.instance.collected | currency }}</span>
       </div>
+      <!-- global stats -->
+      <div class="
+        tw-flex tw-flex-col
+        tw-leading-7 tw-text-slate-700 dark:tw-text-slate-200
+      ">
+        <span class="tw-text-lg sm:tw-text-xl tw-font-medium tw-pb-2">Global Charity impact</span>
+        
+        <span class="tw-text-base">Globally Donated: &nbsp;{{ 0 | currency }}</span>
+        <span class="tw-text-base">Lifes Saved: &nbsp;{{ 0 }}</span>
+      </div>
     </div>
+
+    <app-button class="tw-py-4">Delete Account</app-button>
   </div>
 </div>
 
