@@ -31,6 +31,7 @@ import {
 } from 'src/app/utilities/constants';
 import { NavbarService } from 'src/app/navbar/services/navbar.service';
 import { UserService } from 'src/app/shared/services/user/user.service';
+import { StorageService } from 'src/app/shared/services/storage/storage.service';
 
 
 @Injectable({
@@ -73,6 +74,7 @@ export class AuthService extends AbstractApiService {
     http: HttpClient,
     @Inject(ENVIRONMENT) env: IEnvironment,
     private cookie: CookieService,
+    private storage: StorageService,
     private user: UserService,
     private link: LinksService,
     private api: ApiEndpointService,
@@ -167,8 +169,9 @@ export class AuthService extends AbstractApiService {
     const headers = headersName ? AuthOnly.headers.append(headersName, headersValue as string) : AuthOnly.headers;
 
     const setAuthStorage = (response: IUser): void => {
-      response.token ? this.cookie.set('token', response.token) : undefined;
-      response.email ? this.cookie.set('email', response.email) : undefined;
+      const expiryDate: Date | undefined = user.rememberMe ? this.storage.defineExpiryDate() : undefined;
+      response.token && this.cookie.set('token', response.token, expiryDate);
+      response.email && this.cookie.set('email', response.email, expiryDate);
     };
 
     return (this.post<IUser>(relativePath, user, { headers }) as Observable<IUser>)

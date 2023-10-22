@@ -1,0 +1,1 @@
+export const daysToExpire: number = 12; 

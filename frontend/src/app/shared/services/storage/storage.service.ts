@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { IUser } from 'src/app/custom-types';
+import { daysToExpire } from 'src/app/utilities/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -8,10 +10,16 @@ export class StorageService {
   constructor(
     private cookie: CookieService,
   ) { }
-
-  setCookie(key: string, value: string): void {
-    this.cookie.set(key, value);
-    return;
+  
+  /**
+   * 
+   * @param expiriesIn if not specified - sets by default 12.
+   */
+  defineExpiryDate(expiriesIn?: number): Date {
+    expiriesIn || (expiriesIn = daysToExpire); 
+    const expiryDate: Date = new Date();
+    expiryDate.setDate(expiryDate.getDate() + expiriesIn);
+    return expiryDate;
   }
 
   /**

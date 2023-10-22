@@ -10,7 +10,7 @@ import { NavbarModule } from './navbar/navbar.module';
 import { FancyBgModule } from './fancy-bg/fancy-bg.module';
 import { NotFoundComponent } from './not-found/not-found.component';
 // injection tokens
-import { ENVIRONMENT } from './utilities/constants/injection-tokens';
+import { ENVIRONMENT } from './utilities/constants/general/injection-tokens';
 // injection token values/classes
 import { environment } from 'src/environments/environment.development';
 // interceptors array

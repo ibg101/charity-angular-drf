@@ -12,7 +12,7 @@ import {
   Subscription, 
   map 
 } from 'rxjs';
-import { StorageService } from 'src/app/auth/services/storage.service';
+import { StorageService } from '../storage/storage.service';
 
 @Injectable({
   providedIn: 'root'
