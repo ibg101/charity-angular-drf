@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProfileComponent } from './profile/profile.component';
 import { isAuthenticatedGuard } from '../shared/guards/is-authenticated.guard';
 import { EditProfileComponent } from './edit/edit.component';
+import { MainProfileComponent } from './main/main.component';
 
 const routes: Routes = [
   { 
@@ -10,7 +11,8 @@ const routes: Routes = [
     component: ProfileComponent, 
     canActivate: [isAuthenticatedGuard()],
     children: [
-      { path: 'edit', component: EditProfileComponent }
+      { path: '', component: MainProfileComponent },
+      { path: 'edit', component: EditProfileComponent },
     ] 
   },
 ];

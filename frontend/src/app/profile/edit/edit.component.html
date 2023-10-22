@@ -1,1 +1,38 @@
-<p>edit works!</p>
+<div class="     
+  tw-w-full
+  tw-flex tw-flex-col tw-gap-y-6
+">
+  <div class="tw-flex tw-justify-between twc-text-medium tw-items-center">
+    <span class="tw-text-xl">Edit Credentials</span>
+    <app-router-link [routerLink]="link.profile.profile" [applyGroup]="true" [applyActiveLink]="false">
+      <div class="tw-flex tw-flex-row tw-gap-x-2 tw-items-center">
+        <span>Go Back</span>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="
+          tw-w-4 tw-h-4
+        tw-fill-gray-800 group-hover:tw-fill-sky-500
+        dark:tw-fill-gray-100 dark:group-hover:tw-fill-sky-400
+        ">
+          <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+          <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/>
+        </svg>
+      </div>
+    </app-router-link>
+  </div>
+
+  <div class="
+    tw-flex tw-flex-col tw-gap-y-12
+    tw-max-w-md sm:tw-max-w-sm
+  ">
+    <!-- fields -->
+    <div class="tw-flex tw-flex-col tw-gap-y-4">
+      <app-input>Username</app-input>
+      <app-input>Password</app-input>
+      <app-input>Confirm Password</app-input>
+    </div>
+    <!-- buttons -->
+    <div class="tw-grid tw-grid-rows-2 sm:tw-flex sm:tw-justify-between">
+      <app-button class="tw-row-start-1" [routerLink]="link.profile.profile">Discard</app-button>
+      <app-button class="tw-row-start-2 sm:tw-row-start-1">Submit Changes</app-button>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LinksService } from 'src/app/shared/services/links/links.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./edit.component.scss']
 })
 export class EditProfileComponent {
-
+  constructor(public link: LinksService) { }
 }
