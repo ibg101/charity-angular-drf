@@ -1,4 +1,4 @@
-🚀 Unfinished Charity Project (Fullstack)
+### 🚀 Unfinished Charity Project (Fullstack)
 A fullstack charity platform built with Angular, Tailwind, and Django REST.
 Although unfinished, the backend is fully implemented with authentication, profile management, and more.
 
